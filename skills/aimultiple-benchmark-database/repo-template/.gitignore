@@ -1,0 +1,56 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+venv*/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Node (UI runners or chart builders)
+node_modules/
+*/node_modules/
+
+# Per-run artifacts (rebuildable; canonical results live in the research DB).
+# Exclude any local data/charts/raw-batches/output. The DB is the source of truth.
+data/
+charts/
+raw-batches/
+output/
+output_*/
+workspaces/
+backup/
+data_cache/
+dev_data/
+catboost_info/
+*.parquet
+*.pickle
+*.pkl
+
+# Agentic context / planning docs (not part of the runnable harness)
+PLAN.md
+AGENTS.md
+AGENT.md
+CLAUDE.md
+
+# Pre-edit safety copies
+*.bak
+*.before-*
+
+# Secrets
+.env
+.env.*
+*.log
+
+# Token cache lives under ~/.cache by default; ignore any local override.
+.aimultiple-benchmark-token

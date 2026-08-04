@@ -1,0 +1,24 @@
+# benchmark.toml - one per Bitbucket repo. Repo name should equal benchmark_id.
+#
+# `benchmark_id` is the integer id assigned by the tech team. Find it via
+# `python upload_to_db.py list --company-id <aimultiple_company_id>` or ask Cem.
+
+benchmark_id = 0
+type = "benchmark"
+article_url = ""
+
+# Optional. Defaults to the DB benchmark_name from /describe.
+# page_title = ""
+
+# Optional: override the string id used in /benchmark/assign.
+# Defaults to f"b_{benchmark_id}". Only set if tech team uses a different prefix.
+# benchmark_string_id = "b_0"
+
+[csv]
+path = "output/runs/latest/db-ready.csv"
+
+# Optional: rename local CSV headers to match what `describe` returns.
+# Keys are local CSV columns, values are remote columns.
+# [csv.rename]
+# "model" = "ai_models.name"
+# "company" = "companies.name"
