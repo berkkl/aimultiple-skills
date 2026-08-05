@@ -16,9 +16,27 @@ Triggered by any of:
 - "what is missing from this draft"
 - Any draft posted in chat with >300 words and a clear AIMultiple topic
 
+## Step zero: read the reference article
+
+**Before drafting or restructuring anything, read `drafts/agentic-llm-article-2026-06.md`.** It is the canonical shape for a benchmark article and the team has invested the most effort in it. The rules below describe that shape; the file demonstrates it, which is faster and less ambiguous.
+
+What to copy from it: a two-sentence intro with no header; `## <direct noun-phrase H2>` then the chart embed, then a one-line note on sample size, then three to six standalone takeaway paragraphs; H3s for sub-results; methodology after the results, not before.
+
+`drafts/agentic-it-final.md` is a counter-example on structure: a claim-sentence H2 and a 168-word intro. Do not use it as a model.
+
 ## Guiding principle
 
 The article must be better than every other Google result for its keyword. If it is not, it should not be published. Everything below serves that one test.
+
+## Mechanical lint
+
+Run before delivering any draft:
+
+```
+python3 skills/aimultiple-article-checklist/lint_article.py <draft.md>
+```
+
+It checks the rules in this file that are mechanical: claim-sentence H2s, intro length, paragraphs over 430 characters, bold budget, year in a header, title-cased headers, chart description blocks, empty or oversized H2 sections, banned characters, filler. FAIL blocks delivery; WARN is the author's call. Everything it cannot check, research depth, source quality, Surfer score, and whether a takeaway is actually non-obvious, still needs a human read. **A rule enforced nowhere is not a rule: if a new structural rule lands in this file and is mechanical, add it to the script in the same edit.**
 
 ## Four-phase review
 
@@ -87,6 +105,8 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 - Two H2s must not share identical text (breaks the table of contents).
 - No year in headers. Headers rot otherwise.
 - Lowercase common nouns in H2/H3 headers. Only proper nouns capitalized. Title-case-everywhere is an AI slop signal.
+- **H2s are direct noun phrases naming a section, never claim sentences.** "TSC benchmark results", "Cost & success comparison", "Tool calls per task". Not "A broad-panel shortlist does not carry to multivariate data", not "Split design changes the reported result on subject-structured data". The finding belongs in the takeaways under the chart, where it can carry its numbers and its caveats. Questions are the one exception: "What are agentic LLM systems?" is house style.
+- **A finding that reads as a sentence is an H3 at most, and usually a takeaway instead.** If a section needs a claim in its header to make sense, the claim is not yet stated clearly enough in the body.
 - Open the article with the most interesting element (key list, chart, or comparison), not taxonomy or intro boilerplate. The first scroll is the reader's attention budget.
 - Include at least one element per article. Top performers: TablePress, AIM List. Top combinations: AIM Chart + TablePress; AIM List + TablePress; MaxButton + Use Cases.
 - Put the main comparison table above the fold.
@@ -101,6 +121,10 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 
 **Charts, tables, and data presentation**
 - Chart first, prose second. The highlighted takeaway goes below the chart. Readers scan visuals before text.
+- **Never embed a description block on a chart.** The article carries the embed shortcode and nothing else: `[nivo_charts id="177006" /]`. What the chart means, what it excludes, what it does not license the reader to conclude, all of that is body text under the chart. A caption block inside the article is not the house format and does not render.
+- **Takeaways under a chart: three to six standalone paragraphs, one claim each.** Lead with the claim, carry the number in the same sentence, and stop. No bold lead-ins: bolding every opener is the templated-structure pattern. No bullet list. If a takeaway only restates what the chart axis already says, cut it.
+- **Takeaways must be non-obvious.** "Model A scored highest" is the chart, not a takeaway. What belongs there: where two metrics disagree, where a cheap method matches an expensive one, where the ranking is unstable, where the winner's margin does not survive correction, where a result reverses inside the aggregate. If the section has no non-obvious reading, it may not need prose at all.
+- **Any disclosure the methodology requires travels with the chart into the body text.** When a statistical caveat is mandatory (interval type, panel size, what did not survive correction, which rows are excluded), it is a requirement on the section's prose, not on a caption. Verify each one landed after any restructure.
 - For price-vs-accuracy comparisons (benchmark scatter, cost vs quality), open with an XY scatter chart. The trade-off needs to be visible in one glance.
 - When multiple metrics point the same direction, consider combining them into a single composite metric (events/sec/$, or similar). One composite chart beats three separate charts.
 - If every vendor has a feature, do not put it in a comparison table. Note it in prose. A column of yes/yes/yes/yes adds nothing.
