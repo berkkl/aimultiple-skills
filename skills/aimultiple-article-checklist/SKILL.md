@@ -104,7 +104,7 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 - Articles >500 words need more than two H2s.
 - Two H2s must not share identical text (breaks the table of contents).
 - No year in headers. Headers rot otherwise.
-- Lowercase common nouns in H2/H3 headers. Only proper nouns capitalized. Title-case-everywhere is an AI slop signal.
+- Sentence case in H2/H3 headers: capitalize the first character, then only proper nouns. Title-case-everywhere is an AI slop signal, and all-lowercase reads as an unfinished note. "Cost & success comparison", not "Cost & Success Comparison" and not "cost & success comparison".
 - **H2s are direct noun phrases naming a section, never claim sentences.** "TSC benchmark results", "Cost & success comparison", "Tool calls per task". Not "A broad-panel shortlist does not carry to multivariate data", not "Split design changes the reported result on subject-structured data". The finding belongs in the takeaways under the chart, where it can carry its numbers and its caveats. Questions are the one exception: "What are agentic LLM systems?" is house style.
 - **A finding that reads as a sentence is an H3 at most, and usually a takeaway instead.** If a section needs a claim in its header to make sense, the claim is not yet stated clearly enough in the body.
 - Open the article with the most interesting element (key list, chart, or comparison), not taxonomy or intro boilerplate. The first scroll is the reader's attention budget.

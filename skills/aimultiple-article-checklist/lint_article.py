@@ -68,6 +68,13 @@ def main(path, strict=False):
     # Zero or one is fine, two competing titles is not.
     if len(h1) > 1:
         fail("at most one H1", "%d found" % len(h1))
+    for h in h2 + h3:
+        # Sentence case: the first character is capitalised, the rest of the common
+        # nouns are not. "Lowercase common nouns" is about the words after the first,
+        # and reading it as "lowercase everything" produces headers that look like
+        # unfinished notes.
+        if h[:1].islower():
+            fail("header starts with a lowercase letter; use sentence case", h)
     for h in h2:
         if re.search(r"\b(19|20)\d{2}\b", h):
             fail("no year in a header", h)
