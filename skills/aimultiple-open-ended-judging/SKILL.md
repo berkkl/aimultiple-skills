@@ -6,6 +6,12 @@ description: |
 
 # Open-Ended Judging
 
+Companion files in this folder, shared with the team through the skills repo:
+`PROCESS.md` is the same standard written for a person to follow, and `templates/`
+holds the four documents a run produces (judging plan, judge prompt, disagreement log,
+article disclosures). Point teammates at those; keep this file and PROCESS.md in
+agreement, and fix PROCESS.md if they ever diverge.
+
 ## Activation
 
 Any task whose output cannot be scored against a key: written deliverables, research
