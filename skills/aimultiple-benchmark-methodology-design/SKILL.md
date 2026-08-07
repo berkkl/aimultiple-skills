@@ -22,7 +22,7 @@ Lock these decisions before running comparisons:
 6. Prompt templates, system instructions, and allowed tool use.
 7. Output schema and pass or fail criteria per capability, not just globally.
 8. Metrics: quality, latency, cost, stability, safety, and fallback behavior where relevant.
-9. Judge method: exact match, rubric, programmatic scoring, or model-as-judge.
+9. Judge method: exact match, rubric, programmatic scoring, or model-as-judge. If any task is open-ended, its judging follows `aimultiple-open-ended-judging`; that skill decides the panel, anonymization, disagreement handling and scale.
 10. Number of runs, retry policy, and tie-breaking rules. Minimum 20 runs per task per provider if reporting P50/P90. Minimum 30 if reporting P95 or higher.
 11. Version locks for models, APIs, and datasets.
 12. Measurement model per provider type. If providers have different architectures (API vs. remote browser vs. agent platform), define what clock starts and stops for each type. Document this in the methodology note.
