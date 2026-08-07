@@ -6,11 +6,12 @@ description: |
 
 # Open-Ended Judging
 
-Companion files in this folder, shared with the team through the skills repo:
-`PROCESS.md` is the same standard written for a person to follow, and `templates/`
-holds the four documents a run produces (judging plan, judge prompt, disagreement log,
-article disclosures). Point teammates at those; keep this file and PROCESS.md in
-agreement, and fix PROCESS.md if they ever diverge.
+The canonical text is `docs/JUDGING.md` in the agentic-enterprise-benchmark repo. It
+is self-contained and carries the four templates a run produces (judging plan, judge
+prompt, disagreement log, article disclosures) as appendices, so a teammate without
+this skills repo can still run a panel. Point people there. This file is the same
+standard in short form for routing an assistant; if the two ever disagree, JUDGING.md
+is right and this one gets fixed.
 
 ## Activation
 
