@@ -81,6 +81,7 @@ Banned patterns:
 - Embellished facts. State the fact, then the implication.
 
 Numerical formatting:
+- **Three decimal places is the cap.** Cem, 2026-08-09, on the time-series-classification article: `0.8584` should have been `0.858`. A fourth digit on a benchmark score is precision theater and it makes the number harder to hold while reading. Exceptions: p-values in scientific notation, and identities where the trailing digits are the finding.
 - Consistent decimal precision across all numbers in a table. If some cells show two decimals, `1` becomes `1.00`.
 - If trailing decimals are all zero across all rows, drop them entirely. `97.000` becomes `97`.
 - Never undersell effort. If a benchmark scored 200 deliverables, do not frame it as "10 tasks".
@@ -140,6 +141,8 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 **Benchmark review** (applies when the article is a benchmark or includes benchmark results)
 - If a good model scores 90% or higher on the benchmark, the benchmark has no information value. Design a harder one before publishing.
 - Benchmark rankings need confidence intervals. Single-run numbers are not statistically significant. Run each task multiple times.
+- **The headline claim may only assert what survived correction.** The time-series-classification lede said all four foundation models lose to a convolutional transform, while the body said three of those four comparisons were never tested and the win counts behind them are descriptive. Three quarters of the headline rested on numbers the article itself labels as carrying no test. Before publishing, take the title, the intro and the first takeaway under each chart and check each against what the statistics section establishes. Where only some contrasts survive, the headline names those.
+- **Check any characterization of a named method against that method's own source.** The same lede called MiniRocket "a random convolutional transform"; its paper is titled "MINIROCKET: A Very Fast (Almost) Deterministic Transform for Time Series Classification", and near-determinism was the contribution. A reviewer who knows the field sees that in the first sentence.
 - Define technical terms the first time they appear.
 - Drop subjective criteria from the benchmark if outputs do not differ meaningfully on them. Subjective plus no-differentiation equals noise.
 - Do not undersell the effort. Frame the benchmark by the real number of deliverables, not the headline task count.

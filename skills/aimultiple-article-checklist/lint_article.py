@@ -36,6 +36,30 @@ FILLER = (
 # is only flagged when it is not doing measurement work.
 JUST_OK = r"just\s+(below|above|under|over|before|after|short|outside|inside|enough)\b"
 
+# The cut pass produces appositive fragments, and Cem reads those as the AI-slop signal
+# (2026-08-09): "Twenty-seven datasets, 18 univariate and 9 multivariate, where all four models
+# and both baselines produced a result." The relative clause carries the only verb, so the
+# sentence has no main clause.
+#
+# A general "does this sentence have a finite verb" test needs a POS tagger; a lexical one
+# flagged 12 clean sentences per article on the first attempt, and a WARN nobody reads is worse
+# than no WARN. So this check is deliberately narrow: a noun phrase, a comma, then a relative
+# pronoun, with no verb in front of it. It catches the shape the cut pass actually produces.
+RELATIVE = r",\s+(where|which|whose)\b"
+FINITE = (
+    r"\b(is|are|was|were|be|been|being|am|has|have|had|do|does|did|can|could|will|would|"
+    r"shall|should|may|might|must|remains?|stays?|becomes?|became|gets?|got|makes?|made|"
+    r"takes?|took|gives?|gave|shows?|runs?|ran|holds?|held|falls?|fell|rises?|rose|beats?|"
+    r"wins?|won|loses?|lost|costs?|scores?|reaches?|leaves?|left|puts?|sees?|saw|finds?|"
+    r"found|uses?|means?|starts?|ends?|sits?|lands?|needs?|counts?|treats?|reads?|"
+    r"splits?|reorders?|covers?|carry|carries|produces?|reports?|survives?|matches?|"
+    r"drops?|adds?|ranks?|moves?|pays?|comes?|goes|go|appears?|points?|says?|keeps?|"
+    r"leads?|turns?|opens?|closes?|clears?|passes?|fails?|scores?|splits|repeats?)\b"
+)
+# The verb list is incomplete by construction, so this check is a WARN and needs a human read.
+# A flagged sentence with a verb the list does not know is a false positive; widen the list.
+VERBISH = r"\b\w{3,}(ed|ing)\b"
+
 
 def main(path, strict=False):
     text = open(path).read()
@@ -166,6 +190,40 @@ def main(path, strict=False):
             break
     if hits:
         warn("filler words present", ", ".join(hits))
+
+    # ---- decimal precision ----
+    # Three digits is the cap (Cem, 2026-08-09). Scientific notation is exempt: "7.9e-03" is a
+    # p-value, and so is the mantissa in "1.4e-07". Version strings (1.5.0) never match, since
+    # the fourth digit has to follow a decimal point with nothing else between.
+    prose = re.sub(r"\d+\.\d+e[-+]?\d+", " ", text, flags=re.I)
+    long_dec = sorted(set(re.findall(r"(?<![\d.])\d+\.\d{4,}(?![\d.])", prose)))
+    if long_dec:
+        fail("three decimal places is the cap", ", ".join(long_dec[:6]))
+
+    # ---- sentence fragments ----
+    fragments = []
+    for p in body_paras:
+        clean = re.sub(r"\[efn_note\].*?\[/efn_note\]", " ", p, flags=re.S)
+        clean = re.sub(r"\*\*|\[[^\]]*\]\([^)]*\)|`[^`]*`", " ", clean)
+        for s in re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", clean):
+            s = s.strip()
+            if len(s.split()) < 6 or s.startswith(("|", "#", "-")):
+                continue
+            m = re.search(RELATIVE, s, re.I)
+            if not m:
+                continue
+            # Cut the relative clause out and test what is left. A non-restrictive clause
+            # closed by a comma leaves the main verb behind it ("The results, which cover
+            # both strata, are clear"), so testing only the text in front of the pronoun
+            # would flag that sentence.
+            tail = s[m.end():]
+            close = tail.find(",")
+            head = s[:m.start()] + (tail[close:] if close != -1 else "")
+            if re.search(FINITE, head, re.I) or re.search(VERBISH, head, re.I):
+                continue
+            fragments.append(s)
+    for s in fragments:
+        warn("sentence has no main clause; the verb is inside the relative clause", s[:90])
 
     # ---- report ----
     print("%s: %d words, %d H2, %d H3, %d charts"

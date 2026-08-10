@@ -31,6 +31,16 @@ Use this skill for every sentence intended for publication.
 17. Write for a global audience. If a non-native English reader could read a phrase literally and be confused (e.g. "depressed backend"), rewrite it plainly.
 18. In data writeups, a takeaway must say something the chart does not already show. Do not restate the visible ranking ("X is second, Y is last"); surface the non-obvious finding (a cross-axis divergence, an inversion, an independence). Derive any causal claim from the source data, not a guess.
 
+## Sentences must parse before they are cut
+
+Cem, 2026-08-09, on the published time-series-classification article: "Devrik cumleleri duzeltirsen biraz AI-slop'umsulugu azalir." The article had already been through a Claude cut pass. The cut is what broke it.
+
+1. **Every sentence carries a subject and a finite main verb.** An appositive followed by a relative clause is a fragment, not a sentence. "Twenty-seven datasets, 18 univariate and 9 multivariate, where all four models and both baselines produced a result." has no main verb. Write "Twenty-seven datasets produced a result from all four models and both baselines: 18 univariate and 9 multivariate."
+2. **Plain word order: subject, verb, object.** Fronted adverbials, inverted clauses and stacked qualifiers before the subject are the single biggest source of the translated-prose feel. One fronted phrase in a paragraph is fine, one per sentence is the pattern to kill.
+3. **The cut pass removes words, not information.** Cem on the same article: "Gereksiz kelimeleri cikartmisiz ama ben bile anlamiyorum simdi de. Gerekli kelimeler de cikmis." Shortening that drops the article, the antecedent, or the noun a verb belongs to produces a shorter sentence that says less. If the compressed version needs a reread, it failed.
+4. **Comprehension bar: an intelligent reader outside the field, making an effort, understands it on one read.** Cem's own test: "Ben her gun time series analizi yapmiyorum ama Claude Code'la yapabilirim. Yaziyi ben efor gosterip anlayamiyorsam olmamis." A term of art is defined at first use or replaced. "One of these comparisons was inspected as a corrected contrast and it survives" and "those three carry no test" are unreadable outside the project. Write what was done: "We ran a significance test on only one of these comparisons. MiniRocket beat MOMENT on 24 datasets to 4, and the result holds after correcting for multiple tests. The other three comparisons were never tested."
+5. **Round to three decimals.** Cem: "3 decimal digitte kalirdim." 0.8584 becomes 0.858. Four-digit precision on a benchmark score is precision theater, and it makes the number harder to hold in the head. Exceptions: p-values in scientific notation, and identities where the extra digits are the point.
+
 ## Mandatory cut pass (run before delivering anything, every time)
 
 Repeated feedback, 2026-07-29: "whatever you share comes at 2x the text" and "the structure is good, the rest is word salad." Drafting is not the problem. Not cutting is. So the cut is a separate pass, not a mindset.
@@ -53,10 +63,12 @@ Target: cut the first draft by half. If the cut version loses a fact, put that f
 
 1. Factual correctness
 2. **Cut pass (above). Non-optional.**
-3. Density and redundancy cuts
-4. Tone and natural phrasing
-5. Structural usefulness check
-6. Final anti-slop sweep
+3. **Parse pass. Reread every sentence the cut touched.** Subject, finite verb, plain word order, no orphaned pronoun. This pass exists because the cut pass creates fragments.
+4. Density and redundancy cuts
+5. Tone and natural phrasing
+6. Structural usefulness check
+7. Final anti-slop sweep
+8. **Cross-model review before finalizing.** Anthropic models do not catch their own register. Run the finished draft past a different vendor (Codex / GPT 5.6 Sol) with a reader brief, not an editor brief: does each sentence parse, does the headline claim match the statistics, is any term undefined. Procedure in `aimultiple-publication-quality-gate`.
 
 ## Error Scenarios
 
