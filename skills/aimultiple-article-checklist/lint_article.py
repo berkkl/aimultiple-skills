@@ -146,10 +146,12 @@ def main(path, strict=False):
     if re.search(r"\[CHART\s+C", text):
         fail("no chart description block in the body",
              "charts embed as [nivo_charts id=\"...\" /]; meaning goes in body takeaways")
-    embeds = re.findall(r"\[nivo_charts id=\"([^\"]+)\"", text)
+    # An empty id is the placeholder a draft carries until the panel ids arrive, so the
+    # pattern has to match it. `[^"]+` did not, which let unpublishable embeds lint clean.
+    embeds = re.findall(r"\[nivo_charts id=\"([^\"]*)\"", text)
     for e in embeds:
         if not e.isdigit():
-            warn("chart id is still a placeholder", e)
+            warn("chart id is still a placeholder", repr(e))
 
     # ---- paragraphs ----
     paras = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
@@ -195,8 +197,14 @@ def main(path, strict=False):
     # Three digits is the cap (Cem, 2026-08-09). Scientific notation is exempt: "7.9e-03" is a
     # p-value, and so is the mantissa in "1.4e-07". Version strings (1.5.0) never match, since
     # the fourth digit has to follow a decimal point with nothing else between.
+    # Identifiers are stripped first, so DOIs in links and bare arXiv ids do not read as figures.
     prose = re.sub(r"\d+\.\d+e[-+]?\d+", " ", text, flags=re.I)
-    long_dec = sorted(set(re.findall(r"(?<![\d.])\d+\.\d{4,}(?![\d.])", prose)))
+    prose = re.sub(r"https?://\S+", " ", prose)
+    prose = re.sub(r"arxiv:\s*\d+\.\d+", " ", prose, flags=re.I)
+    # The trailing lookahead excludes a following DIGIT only. An earlier "(?![\d.])" also excluded
+    # a following period, which blinded the rule to every figure that ends a sentence: four of them
+    # in the TSC article, including 0.8539 and 0.5453.
+    long_dec = sorted(set(re.findall(r"(?<![\d.])\d+\.\d{4,}(?!\d)", prose)))
     if long_dec:
         fail("three decimal places is the cap", ", ".join(long_dec[:6]))
 

@@ -95,6 +95,18 @@ every call; without it providers reserve the full context against the account ba
 and cheap calls fail on a healthy balance. Bind judge accounts through an explicit
 profile and verify the expected account before the run, never inherit the shell's.
 
+Give the judge panel an account nothing else uses. OAuth refresh tokens are
+single-owner, so an account shared with a run box means the two cannot run at the same
+time, and a fresh login on one silently kills the other. Where a fallback order exists,
+write it down and move down it only on exhaustion, recording which account scored which
+items: a campaign split across accounts is still one panel, but the audit trail has to
+say where each call was billed.
+
+Detect exhaustion on both streams. Codex reports a weekly cap on stderr; Claude Code
+reports it on **stdout** with an empty stderr and exit code 1, so a wrapper that reads
+only stderr logs an empty error and the campaign looks like it merely crashed. After a
+cap, a short probe succeeding proves one small call fit, not that the cap cleared.
+
 ## Reporting checklist
 
 Before publishing a judged leaderboard, the article states: the gate and how many arms

@@ -32,10 +32,10 @@ All of the following must be true:
 Cem, 2026-08-09: "LLM'le de bi review lazim finalize edince." The time-series-classification article was drafted and cut by Claude, read by Berkk, iterated, and still shipped with fragments, four-decimal numbers and a lede that claimed more than the corrected statistics supported. An Anthropic model does not hear its own register, so the finalize review runs on a different vendor.
 
 ```bash
-codex exec -s read-only -o review-out.md - < skills/aimultiple-publication-quality-gate/review-prompt.md
+cat skills/aimultiple-publication-quality-gate/review-prompt.md drafts/<draft>.md > /tmp/review-in.md && codex exec -s read-only --skip-git-repo-check -C /tmp -o /tmp/review-out.md - < /tmp/review-in.md
 ```
 
-Append the draft to that prompt file, or pass the draft path inside it. `-c model_reasoning_effort=xhigh` for a long article. Use the default `~/.codex` profile: this is not judge work and it does not burn the judge quota.
+`--skip-git-repo-check` is required: the AIM Articles workspace is not a git repository, and without it `codex exec` prints "Not inside a trusted directory" and exits 0 with no output. Use `-c model_reasoning_effort=xhigh` for a long article. Use the default `~/.codex` profile: this is not judge work and it does not burn the judge quota.
 
 The reviewer brief is a reader brief, not an editor brief. Three questions only:
 1. Does every sentence parse, and does any of them need a second read?
