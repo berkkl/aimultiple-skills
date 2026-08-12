@@ -140,6 +140,33 @@ Design rule: `base-<chart-id>.json` stays strict-structure so new providers or n
 
 Multiple chart-ids per benchmark are fine. One base + one prepare + one results per chart-id.
 
+### Never plot two summaries of the same measurement against each other
+
+Berkk, 2026-08-10, after Cem read a mean-rank against mean-accuracy scatter and asked whether the
+two axes were the same metric scored twice. They effectively were. Mean rank orders the methods on
+each dataset and averages the positions; mean accuracy averages the values. Same input, so the
+scatter is a line by construction and the reader learns nothing the ordering did not already say.
+
+Three published TSC charts have this shape and all three measure the same way: mean rank against
+mean accuracy R2 0.931, Bradley-Terry rating against mean accuracy R2 0.924, the 30-resample rank
+panel R2 0.919 with all nine methods in identical positions on both axes.
+
+Run the check before building, not after:
+
+1. Compute Pearson r between the two axis values across the plotted entities.
+2. Count how many entities hold the same position when sorted by x and by y.
+3. If R2 is above roughly 0.9 and most positions are unchanged, the chart carries no finding. Build
+   something else.
+
+The test is whether the correlation is a result or a construction. Accuracy against balanced
+accuracy on the same predictions passes, because the reversal is the finding and three of five
+methods change position. Accuracy against fold-to-fold standard deviation passes, because level and
+variability are different quantities. Cost against accuracy passes and is the model to copy: r is
+0.027, the axes are independent, and the 247-fold spread is visible with no hover.
+
+When the message is "no single winner", plot the thing that says it directly, such as bootstrap
+first-place share, rather than a scatter whose two axes disagree in two places out of twelve.
+
 ## Preflight checklist
 
 Run before pushing the init commit. `scripts/audit.py` automates items 1-9 and 13.
