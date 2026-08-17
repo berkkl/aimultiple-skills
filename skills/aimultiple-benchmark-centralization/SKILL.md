@@ -142,7 +142,7 @@ Multiple chart-ids per benchmark are fine. One base + one prepare + one results 
 
 ### Never plot two summaries of the same measurement against each other
 
-Berkk, 2026-08-10, after Cem read a mean-rank against mean-accuracy scatter and asked whether the
+Berkk, 2026-08-12, after Cem read a mean-rank against mean-accuracy scatter and asked whether the
 two axes were the same metric scored twice. They effectively were. Mean rank orders the methods on
 each dataset and averages the positions; mean accuracy averages the values. Same input, so the
 scatter is a line by construction and the reader learns nothing the ordering did not already say.
@@ -166,6 +166,17 @@ variability are different quantities. Cost against accuracy passes and is the mo
 
 When the message is "no single winner", plot the thing that says it directly, such as bootstrap
 first-place share, rather than a scatter whose two axes disagree in two places out of twelve.
+
+**A near-perfect correlation is not a defence, and neither are the exceptions.** Cem, 2026-08-17,
+on the same chart: "Dedigin 2 fark baya dusuk. Icime sinmedi. [...] Ama bir grafige 2. boyut
+eklenecekse bir ek bilgi veriyor olmali. Burada ben cok az ek bilgi goruyorum." Two disagreements
+out of twelve entities is a footnote, not a second dimension. Explaining why the axes come apart
+does not earn the axis; the reader has to gain something from it.
+
+**The fallback is one dimension.** If the second axis fails the check, publish the metric that
+carries the message as a sorted bar and put the disagreement in the prose. That is what Cem asked
+for here, and the share asset is the bar, not the scatter. Do not truncate its value axis: a floor
+under a narrow range manufactures the separation the tests did not find.
 
 ## Preflight checklist
 
