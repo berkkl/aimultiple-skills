@@ -36,6 +36,35 @@ FILLER = (
 # is only flagged when it is not doing measurement work.
 JUST_OK = r"just\s+(below|above|under|over|before|after|short|outside|inside|enough)\b"
 
+# House words that leak out of prompts, configs, rubrics and code into published prose.
+# Berkk, 2026-08-17, on "invent a domain": the phrase was lifted verbatim from the task
+# prompt, where it is precise for the engineer who wrote it and jargon for the reader.
+# Fidelity to the source text is not the same as being right for the reader, so every term
+# of art is either defined at first use or replaced with the word a person would say.
+# Right-hand side is the replacement to consider, not a rule; the check is a WARN.
+JARGON = {
+    "arm": "setup, or the model's name",
+    "arms": "setups",
+    "harness": "agent program",
+    "deliverable": "file",
+    "deliverables": "files",
+    "the field": "the other models, or the 50-point average",
+    "borda count": "combining both rankings",
+    "kendall tau": "how closely the two orders match",
+    "rank range": "the positions it holds",
+    "confidence interval": "state the stability plainly, or drop it",
+    "format gate": "the automatic checks",
+    "wall clock": "time limit",
+    "telemetry": "usage records",
+}
+# Two words need their context read before they are called jargon.
+# "domain" is legitimate in SEO copy (domain authority, domain name) and jargon everywhere
+# else, and on this site the wrong reading is the likelier one.
+DOMAIN_OK = r"domain\s+(authority|name|names|rating)\b"
+# "cell" is our word for one model on one task, and also the ordinary word for a box in a
+# spreadsheet. "no empty cells" is a CSV rule, not a leak.
+CELL_OK = r"(empty|blank|header|merged)\s+cells?\b"
+
 # The cut pass produces appositive fragments, and Cem reads those as the AI-slop signal
 # (2026-08-09): "Twenty-seven datasets, 18 univariate and 9 multivariate, where all four models
 # and both baselines produced a result." The relative clause carries the only verb, so the
@@ -192,6 +221,26 @@ def main(path, strict=False):
             break
     if hits:
         warn("filler words present", ", ".join(hits))
+
+    # ---- house jargon ----
+    # Only the published article is checked. Everything above the first horizontal rule is the
+    # internal header, which is written for us and is allowed to name arms, cells and harnesses.
+    body = text.split("\n---\n", 1)[-1]
+    body = re.sub(r"\[efn_note\].*?\[/efn_note\]", " ", body, flags=re.S)
+    body = re.sub(r"`[^`]*`|https?://\S+", " ", body).lower()
+    leaks = ["%s -> %s" % (t, alt) for t, alt in JARGON.items()
+             if re.search(r"\b%s\b" % re.escape(t), body)]
+    for m in re.finditer(r"\bdomain\b", body):
+        if not re.match(DOMAIN_OK, body[m.start():]):
+            leaks.append("domain -> business scenario")
+            break
+    for m in re.finditer(r"\bcells?\b", body):
+        if not re.search(CELL_OK, body[max(0, m.start() - 12):m.end()]):
+            leaks.append("cell -> run")
+            break
+    if leaks:
+        warn("house jargon in published prose; say what a person would say",
+             "; ".join(sorted(leaks)))
 
     # ---- decimal precision ----
     # Three digits is the cap (Cem, 2026-08-09). Scientific notation is exempt: "7.9e-03" is a

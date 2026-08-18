@@ -41,6 +41,19 @@ Cem, 2026-08-09, on the published time-series-classification article: "Devrik cu
 4. **Comprehension bar: an intelligent reader outside the field, making an effort, understands it on one read.** Cem's own test: "Ben her gun time series analizi yapmiyorum ama Claude Code'la yapabilirim. Yaziyi ben efor gosterip anlayamiyorsam olmamis." A term of art is defined at first use or replaced. "One of these comparisons was inspected as a corrected contrast and it survives" and "those three carry no test" are unreadable outside the project. Write what was done: "We ran a significance test on only one of these comparisons. MiniRocket beat MOMENT on 24 datasets to 4, and the result holds after correcting for multiple tests. The other three comparisons were never tested."
 5. **Round to three decimals.** Cem: "3 decimal digitte kalirdim." 0.8584 becomes 0.858. Four-digit precision on a benchmark score is precision theater, and it makes the number harder to hold in the head. Exceptions: p-values in scientific notation, and identities where the extra digits are the point.
 
+## Use the word a person would use, not the word the source used
+
+Berkk, 2026-08-17, on "invent a domain" in the agentic-it methodology: the phrase was lifted straight from the task prompt. Precise for the engineer who wrote the prompt, jargon for the reader, and on a site that publishes about SEO, "domain" reads as a domain name first. Being faithful to the source text is not the same as being right for the reader.
+
+Our own words leak in from prompts, rubrics, configs, chart titles and code. The same session had to strip `arm`, `cell`, `harness`, `deliverable`, `field`, `Borda count`, `Kendall tau`, `rank range` and `format gate` out of two drafts, all of them correct internally and all unreadable outside the project.
+
+1. **Every term of art is defined at first use or replaced.** Replacing is the default; define only when the term is the subject of the article.
+2. **Check words that carry a second, more common meaning.** `domain`, `cell`, `field`, `arm`. The reader picks the everyday reading, so a technically correct sentence can still be read wrong.
+3. **Translate at the point of writing, not at review.** The lint catches known words; it cannot catch a new one invented this week.
+4. **A word from an artifact is a draft, not a decision.** Chart titles and axis legends count as published prose: the enterprise score chart said "by model and harness" while the article said "agent program".
+
+Known replacements are in `JARGON` in `skills/aimultiple-article-checklist/lint_article.py` and fire as a WARN. Add the word when a new one leaks.
+
 ## Mandatory cut pass (run before delivering anything, every time)
 
 Repeated feedback, 2026-07-29: "whatever you share comes at 2x the text" and "the structure is good, the rest is word salad." Drafting is not the problem. Not cutting is. So the cut is a separate pass, not a mindset.
