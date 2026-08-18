@@ -44,13 +44,29 @@ what is missing, and offer to fix each gap. Do not rewrite the author's prose.
 The hedges and qualifications in a benchmark write-up are usually load-bearing
 and were argued over.
 
-## Never invent a name
+## Never invent a name, with one exception
 
 This applies to you while you write or audit, and it is the rule the document
 should make unnecessary downstream.
 
 If something has an official name, use it exactly as it is officially written.
 If it has no official name, describe it. Do not coin one.
+
+**The exception is the name of our own benchmark.** We ran it, so we are the
+ones entitled to name it, and "official" already means the owner's naming. When
+the benchmarker has given the work a name, that name wins and you use it exactly.
+When they have not, the house convention applies:
+
+> AIM &lt;Topic&gt; Benchmark
+
+built from the article topic: `tabular-models` gives "AIM Tabular Models
+Benchmark", `agentic-it` gives "AIM Agentic IT Benchmark". Write it into the
+`Benchmark name:` line rather than leaving the line to say "none". A name in the
+document is a name the author can see and object to; a name supplied later is
+one nobody reviewed.
+
+The exception stops at our own benchmark. Everything the benchmark touches, and
+everything anyone else owns, still falls under the rule below.
 
 Official means published or otherwise established by whoever owns the thing: the
 product's own site for a product, the paper or repository for a method, the
@@ -69,16 +85,28 @@ identifiers, and internal tooling. "The 15-dataset univariate panel" is a
 description and is fine. "UniPanel-15" is a name, and inventing it is not yours
 to do.
 
-Where a name is genuinely missing and would help, ask the author rather than
-supplying one:
+Where a name for one of those is genuinely missing and would help, ask the
+author rather than supplying one:
 
-> The write-up refers to "the benchmark" throughout. Does it have an official
-> name? If not, the article will call it "the benchmark", which is fine.
+> The write-up calls this "the 15-dataset univariate panel" throughout. Does
+> that panel have an official name, or should the article keep describing it?
 
-An unnamed benchmark is not a defect. Downstream handles it: the article says
-"the benchmark" and reads normally. What it cannot handle is a name that came
-from nowhere, because nothing downstream can tell an invented name from a real
-one.
+For the benchmark's own name, ask the narrower question instead:
+
+> Has this benchmark been given a name? If not, the handout will call it
+> "AIM &lt;Topic&gt; Benchmark", which is our house convention for our own work.
+
+**If the benchmarker deliberately wants no name at all**, that is a real
+position and it needs to be stated as a rule, not as a blank. A replication
+study may avoid a name precisely because naming it implies a contribution it
+does not claim. Put it under `## Writing rules` as a constraint with its reason:
+
+> - Never give this benchmark a name. It replicates published work and a name
+>   would imply an original contribution. Refer to it as "the benchmark".
+
+Stated there, it reaches the writer as a hard constraint and outranks the house
+convention. Written as "Benchmark name: none", it does not: the pipeline reads
+that as an empty field and fills it.
 
 The same restraint applies to numbers, and for the same reason. If the document
 does not state a figure, do not supply a plausible one. Ask, or leave it out.
@@ -212,7 +240,55 @@ Write them under a heading, one per line, with the reason:
 The reason matters as much as the rule. A rule with its reason attached survives
 paraphrase; a bare ban only catches the exact string.
 
-### 6. Name the wrong conclusion, not just the wrong words
+### 6. Say what the rule does not ban
+
+A ban gets over-applied, and an over-applied ban does its own damage. The agent
+reads "never rank A against B" and stops distinguishing A from B at all, which
+can make the article less accurate than the error the rule was written to
+prevent.
+
+This is a real case. A handout carried:
+
+```
+- Never write that the Bright Data command-line interface beat the Bright Data
+  MCP server. They split the five runs 3-1 with one tie. Allowed: "a Bright Data
+  interface led every run". Banned: any sentence ranking the two against each
+  other.
+```
+
+The rule is correct and the agent obeyed it. It then wrote:
+
+> A Bright Data interface completed at least 44.6 tasks out of 100 on average.
+
+44.6 is the command-line interface's mean. The MCP server's is 42.2. So the
+sentence is false for one of the two things it covers. The agent took the
+Allowed phrasing, which was written for the claim about who led each run, and
+reused it for a claim about one interface's own average, where it does not hold.
+
+The rule banned a **comparison**. The agent applied it to **attribution**.
+
+Write the boundary into the rule:
+
+```
+- Never write that the Bright Data command-line interface beat the Bright Data
+  MCP server. They split the five runs 3-1 with one tie. Allowed: "a Bright Data
+  interface led every run", and reporting each interface's own figures under its
+  own name, for example "the command-line interface averaged 44.6 and the MCP
+  server 42.2". Banned: any sentence ranking the two against each other. This
+  rule bans the comparison, not the attribution: every figure still belongs to
+  the interface that produced it.
+```
+
+The test to apply to each of your rules: **what would obeying this too
+enthusiastically cost?** If the answer is a number losing its owner, a product
+losing its name, or a finding becoming vague, say so in the rule. One sentence
+naming what stays allowed is usually enough.
+
+Watch for it especially on rules that ban naming, ranking, or comparing. Those
+are the ones an agent generalises from "do not compare these two" into "do not
+mention these two separately".
+
+### 7. Name the wrong conclusion, not just the wrong words
 
 A ban list catches phrasings. It does not catch scope errors. "RocketPFN
 outperformed the foundation models" breaks no ban and is still a category error
@@ -233,7 +309,7 @@ that its published rank changes.
 That "does not support" line is the highest-value sentence in a handout. It is
 the failure a ban list cannot prevent.
 
-### 7. List anything that must appear in the article
+### 8. List anything that must appear in the article
 
 If a caveat has to reach the reader, say so explicitly. The agent treats these
 as required and places them in the body.
@@ -247,7 +323,7 @@ as required and places them in the body.
   Accuracy became the comparison metric without a recorded decision.
 ```
 
-### 8. Say whether the benchmarked items are commercial
+### 9. Say whether the benchmarked items are commercial
 
 The agent builds a pricing section for commercial products and skips it for
 research methods and open-source algorithms. Getting this wrong either wastes a
@@ -256,7 +332,7 @@ research call producing "not enough data", or drops a pricing table you wanted.
 One line: `Commercial products: yes` or `Commercial products: no, these are
 research methods with no pricing.`
 
-### 9. Mark anything that must not be published
+### 10. Mark anything that must not be published
 
 Sign-off gates, reviewer names, internal links, open questions, and TODOs get
 stripped only if they are marked. Put them under a heading containing "not for
