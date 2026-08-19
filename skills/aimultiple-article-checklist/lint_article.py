@@ -182,6 +182,31 @@ def main(path, strict=False):
         if not e.isdigit():
             warn("chart id is still a placeholder", repr(e))
 
+    # ---- takeaway block budget ----
+    # Cem, 2026-08-19, on the published agentic-enterprise results section: seven
+    # paragraphs under the first chart, most of them explaining how the number was
+    # produced rather than what it was. "Bu kısım tamamen AI Slop, gereksiz wall of
+    # text." The block under a chart is the reader's payoff, not the method.
+    for m in re.finditer(r"\[nivo_charts id=\"[^\"]*\"\s*/\]", text):
+        block = re.split(r"\n#{2,3} ", text[m.end():])[0]
+        block = re.split(r"\[nivo_charts ", block)[0]
+        items = [b.strip() for b in re.split(r"\n\s*\n", block) if b.strip()]
+        # a bullet list counts as one item per bullet, a paragraph as one item
+        count = sum(len([l for l in it.split("\n") if l.strip().startswith(("-", "*"))]) or 1
+                    for it in items)
+        words = len(re.sub(r"\[efn_note\].*?\[/efn_note\]", "", block, flags=re.S).split())
+        if count > 6:
+            warn("takeaway block over 6 items", "%d under a chart; cut or move to Methodology" % count)
+        if words > 190:
+            warn("takeaway block over 190 words",
+                 "%d words under a chart; the method belongs in Methodology" % words)
+        for sent in re.split(r"(?<=[.!?])\s+", block):
+            if re.search(r"\b(we (re)?scored|we (took|ran|rescored)"
+                         r"|the judges rank|per model per task)\b", sent, re.I) \
+                    and not sent.strip().startswith(("The chart", "Scores are relative")):
+                warn("method sentence in a takeaway block", sent.strip()[:80] + "...")
+                break
+
     # ---- paragraphs ----
     paras = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
     body_paras = [p for p in paras

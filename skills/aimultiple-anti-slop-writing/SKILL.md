@@ -54,6 +54,17 @@ Our own words leak in from prompts, rubrics, configs, chart titles and code. The
 
 Known replacements are in `JARGON` in `skills/aimultiple-article-checklist/lint_article.py` and fire as a WARN. Add the word when a new one leaks.
 
+## State the result, not the machinery
+
+Cem, 2026-08-19, on the published agentic-enterprise results section: "Bu kısım tamamen AI Slop, gereksiz wall of text, burada 2-3 cümle ya da kısa bullet pointlerle fact check yapıyo olmamız lazım." Seven paragraphs sat under the first chart. Four of them were method, not result.
+
+The pattern that produces this: every finding gets its own paragraph, and every paragraph earns its length by explaining how the number was produced. "Their lead does not depend on which tasks we picked: we rescored the leaderboard 4,000 times on random re-selections of the 69 tasks, and those two held first and second place every time." The finding is six words long. The rest is the method.
+
+1. **The result block carries results.** Every sentence about how a number was produced moves to Methodology. If the number cannot stand without its method, compress the method into a clause, not a sentence: "held the top two spots in all 4,000 rescorings".
+2. **A summary judgment followed by supporting numbers is the slop shape.** "Opus 5 has no weak tasks. Its best score, 80.6, is the highest anyone posted, and its worst, 52.9, still beats an average answer." Cem cut it outright. Write the number that already carries the point and stop.
+3. **Short bullets beat paragraphs for a chart's findings.** One number each, no connective prose between them. Reserve paragraphs for findings that need a caveat in the same breath.
+4. **Length is the tell, so measure it.** More than six items or about 190 words under a chart is a rewrite, not a trim. `lint_article.py` counts both and flags method verbs inside the block.
+
 ## Mandatory cut pass (run before delivering anything, every time)
 
 Repeated feedback, 2026-07-29: "whatever you share comes at 2x the text" and "the structure is good, the rest is word salad." Drafting is not the problem. Not cutting is. So the cut is a separate pass, not a mindset.
