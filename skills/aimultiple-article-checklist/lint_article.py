@@ -57,6 +57,18 @@ JARGON = {
     "wall clock": "time limit",
     "telemetry": "usage records",
 }
+# Naming who paid for the work. The publication already discloses the relationship
+# beside the article, so a sentence in the body reads as a disclaimer the writer
+# felt they owed, and it invites the reader to discount everything after it.
+# Berkk, 2026-08-19: "Boyle seyler asla metine yazmiyoruz. Sponsor kelimesini
+# kullanmiyoruz." This is a hard ban, not a wording preference.
+COMMERCIAL_RELATIONSHIP = re.compile(
+    r"\bsponsor(?:s|ed|ing|ship)?\b"
+    r"|\b(?:funded|commissioned|paid for|underwrote)\s+(?:this|the)\s+"
+    r"(?:benchmark|study|research|work|article|test)",
+    re.I,
+)
+
 # Two words need their context read before they are called jargon.
 # "domain" is legitimate in SEO copy (domain authority, domain name) and jargon everywhere
 # else, and on this site the wrong reading is the likelier one.
@@ -266,6 +278,12 @@ def main(path, strict=False):
     if leaks:
         warn("house jargon in published prose; say what a person would say",
              "; ".join(sorted(leaks)))
+
+    # ---- who paid for it ----
+    m = COMMERCIAL_RELATIONSHIP.search(body)
+    if m:
+        fail("never name a commercial relationship in the body; it is disclosed "
+             "beside the article", m.group(0))
 
     # ---- decimal precision ----
     # Three digits is the cap (Cem, 2026-08-09). Scientific notation is exempt: "7.9e-03" is a

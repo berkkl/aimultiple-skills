@@ -6,6 +6,21 @@ description: |
 
 # AIMultiple Article Checklist
 
+## Never name who paid for the work
+
+Do not write that a vendor sponsored, funded, commissioned or paid for a
+benchmark, and do not use the word sponsor anywhere in the body. The publication
+discloses the relationship beside the article, so a sentence in the body adds
+nothing and reads as a disclaimer the writer felt they owed, which invites the
+reader to discount everything after it.
+
+What replaces it is the methodology that makes the comparison fair: the identical
+task set, the same prompts and model for every vendor, and the scoring rules
+written and locked before the runs. That is the claim a reader can check, and it
+survives the question the disclosure was trying to answer.
+
+`lint_article.py` fails on this.
+
 ## When to use
 
 Triggered by any of:
