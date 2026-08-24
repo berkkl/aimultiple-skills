@@ -1,7 +1,26 @@
 ---
 name: aimultiple-publication-quality-gate
 description: |
-  Final pre-publish quality gate for AIMultiple outputs: articles, benchmark writeups, scorecards, vendor recommendation memos. Use at the end of every draft cycle, after writing and research are complete, before anything is shared externally or posted. Also the home of the cross-model Codex review: invoke this skill whenever the user asks for a codex review, a second-model review, an AI-slop or language check on a draft, or says the copy "sounds like AI". Carries both review briefs and the `codex exec` recipe, including the foreground-only rule. Without this skill, factual, methodology, and decision-quality defects survive into publication and damage AIMultiple's rankings and customer trust.
+  Cross-model Codex review of PROSE, and the final pre-publish quality gate for AIMultiple
+  outputs: articles, benchmark writeups, scorecards, vendor memos.
+
+  Use this, NOT the generic `codex-review` skill, whenever the thing being reviewed is a draft,
+  an article or any writing. `codex-review` is for source code and needs a git repo; this
+  workspace is not one. If the user says "codex review" while an article is in play, they mean
+  this skill.
+
+  Triggers, English: codex review, run it past codex, second-model review, AI-slop check,
+  language or register check, "this sounds like AI", "is it ready to publish", final draft
+  review, before external share.
+
+  Triggers, Türkçe: codexe review ettir, codexten geçir, codex'e bak, slop kontrolü, dil
+  kontrolü, üslup kontrolü, "AI gibi duruyor", "yapay zeka yazmış gibi", yayına hazır mı,
+  canlıya hazır mı, son kontrol.
+
+  Carries both review briefs (review-prompt.md for reader defects, slop-prompt.md for register)
+  and the `codex exec` recipe including the foreground-only rule. Without this skill, factual,
+  methodology and register defects survive into publication and damage AIMultiple's rankings
+  and customer trust.
 ---
 
 # Publication Quality Gate
