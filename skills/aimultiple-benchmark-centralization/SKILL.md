@@ -58,6 +58,40 @@ Per data engineering convention, each benchmark id maps to one or two tables:
 
 Tech team creates both tables. The benchmark repo does not own the table definitions, only the row data.
 
+## Houston registry record
+
+Every benchmark has one record in Houston's Benchmark Centralization list (`houston.../benchmarks/list`).
+**We take the id there ourselves and push the data ourselves** (Berkk, 2026-08-24). The old flow, where
+the tech team created the id and the table, is retired; see [[aimultiple-benchmark-database]] for what
+is still open in the API contract.
+
+Record fields, and what each one must contain:
+
+| Field | Rule |
+|---|---|
+| Name | What the table actually measures. Not a slug (`agentic-llm-successfull-task`), not a copy of the article title. Read the table's own column names and FK values before naming it. |
+| Description | 2-3 sentences derived from the data: scope, size, what is being compared. **Never a copy of the Name**, which is the most common defect in our own records. |
+| URL | The live article URL. If it redirects, the record carries the old slug and must be repointed. |
+| URL title | **Leave it empty and Save. The system fills it.** A stale title cannot be corrected through the API; it is a manual Houston edit. |
+| Status | Active only if the table exists and has rows. An Active record with an empty table pollutes the list; make it Passive until the data is loaded. |
+
+**Before taking a new id, search the list for the article's slug.** Two records can end up holding the
+same benchmark: `b_238` and `b_333` both carry tabular-models, from different pushes.
+
+### Reading a registry audit
+
+The audit CSV (Ekrem Sarı, 2026-08-23, from `benchmarkcent/scripts/researcher_audit.py`) shows each
+record from four sides: **ŞU AN** the registry, **VERİ** the prod table, **CANLI** the published
+article, **DOĞRUSU** the derived correction.
+
+- Two coverage percentages, read together. "Share of the table's numbers that appear in the article"
+  is meaningful only for small summary tables. **For a raw measurement table, read the other one**,
+  the share of the article's numbers that come from this table; a 1,315-row table behind three
+  summary charts scores near zero on the first and high on the second.
+- **"Verisi yazıda görünmüyor" is a candidate, not a verdict.** It is a numeric-overlap heuristic and
+  it misses in both directions. Open the article and confirm before making a record Passive.
+- Rows marked "API hatası" are a server-side SQL failure. Nothing to do on our side.
+
 ## README required sections
 
 Per Confluence Code Development Standards, every README has:
@@ -203,7 +237,7 @@ Run before pushing the init commit. `scripts/audit.py` automates items 1-9 and 1
 2. Aggregate into `output/db-ready.csv` via `scripts/build_db_csv.py`.
 3. Generate `output/preview.csv` + `output/db-types-proposal.csv` via `scripts/build_preview.py`.
 4. Run `python scripts/audit.py`. Fix anything it flags.
-5. If the DB table for this id does not exist: forward `preview.csv` + `db-types-proposal.csv` to tech team. Wait for table creation. Forward any missing shared-table entries (models, companies) at the same time.
+5. Take the benchmark id in Houston and fill the record (Name, Description, URL; leave URL title empty). If the table for that id does not exist yet, create it under the new flow, and fall back to forwarding `preview.csv` + `db-types-proposal.csv` to the tech team only while that call is unconfirmed. Missing shared-table entries (models, companies) still go to the tech team either way.
 6. Once the table exists: `validate → upload → get → assign` via `upload_to_db.py`. See [[aimultiple-benchmark-database]].
 7. Build `output/results-<chart-id>.json` for every chart via `nivo/prepare-<chart-id>.py`. Upload to Management Panel.
 8. Commit as `<benchmark-slug> init`. No Claude attribution. Push to `aimultiplev4/team-benchmarks` main.

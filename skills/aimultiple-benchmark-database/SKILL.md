@@ -14,6 +14,22 @@ Articles that contain more than one benchmark get more than one repo. `agentic-l
 
 Each repo emits one canonical DB-ready CSV plus a `nivo/` directory of chart CSVs. The chart CSVs feed the published article. The DB CSV feeds the new research DB.
 
+## Who owns the id and the table (changed 2026-08-24)
+
+**We take the benchmark id in Houston ourselves, register the benchmark there, and push the data
+ourselves.** Berkk, 2026-08-24, on the move to the new system. The old flow, requesting an id and a
+table from the tech team and waiting, no longer applies to new benchmarks.
+
+Record fields and their rules are in [[aimultiple-benchmark-centralization]]. Two consequences here:
+
+- `POST /benchmark/assign` writes `article_url` and `page_title`, but a **stale URL title cannot be
+  fixed through the API**: it is corrected by emptying the field in Houston and saving, after which
+  the system refills it. Do not assume `assign` repaired a title; check the record.
+- **UNVERIFIED, confirm before relying on it:** the API surface below has no create-table call. Which
+  call (or which Houston action) creates `b_<id>_results` under the new flow is the one open
+  question. Verify it against a live account before scheduling a push, and write the answer here.
+  Until it is confirmed, the preview-CSV handoff below is still the fallback.
+
 ## API surface
 
 Base URL: `https://research-api.test.v5.aimultiple.com` (test env). Override with `AIMULTIPLE_BENCHMARK_API_BASE`.
@@ -100,7 +116,7 @@ python upload_to_db.py assign
 ## Failure modes & server gotchas
 
 - **401 on any non-authorize call:** token expired. Re-run any subcommand; the client re-authorizes automatically.
-- **`Invalid benchmark id or type`:** the id does not exist in the DB. Ask tech team to create it.
+- **`Invalid benchmark id or type`:** the id does not exist in the DB. Take the id in Houston first (see the ownership section above); an id that exists in the registry but has no table still fails here.
 - **`insertCount` less than CSV row count:** rows silently rejected. Re-describe and diff headers. FK mismatches are the usual cause.
 - **522 or unexpected 301:** base URL is wrong. Confirm `AIMULTIPLE_BENCHMARK_API_BASE`.
 - **DNS works but Cloudflare 522:** the test environment is down; check with tech team before retrying.
