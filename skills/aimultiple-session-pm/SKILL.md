@@ -37,7 +37,8 @@ Requests arrive from the /aim-pm form as `INBOX-x` cards in the "Gelen İşler" 
 
 1. Update the touched rows: Durum, Kalan, date in parentheses. A row moves only on concrete evidence (file written, run finished, live check, card comment). No evidence, no move.
 2. Post the durum comment to the card (existing convention: Yapılan / Sıradaki / Blocker). Row fully done → mark done in the file and move the card state with user confirmation.
-3. Friday checkout → offer to generate the Cem weekly from this file (aimultiple-cem-report summary format, flat bullets).
+3. **Push the plan to the board.** `cd ~/Projects/berkkalelioglu.com && npm run pm:push` (add a week label to push another week; `--dry` to check parsing first). berkkalelioglu.com/aim-pm renders a KV copy of the plan, not the file, and the plan is the whitelist: YouTrack is queried only for the cards the plan names, so a row that was never pushed is invisible there and its card shows only inside the "open cards not in the plan" count. Editing the markdown alone changes nothing on the site. On 2026-08-25 a new row (AIM-78) was written to the file and not pushed, and Berkk found it missing from the board.
+4. Friday checkout → offer to generate the Cem weekly from this file (aimultiple-cem-report summary format, flat bullets).
 
 ## Failure cases
 
@@ -50,4 +51,5 @@ Requests arrive from the /aim-pm form as `INBOX-x` cards in the "Gelen İşler" 
 - Weekly summary: `aimultiple-cem-report` (summary mode reads this file first, dailies second).
 - Card conventions: `aimultiple-youtrack-tasks`.
 - Incoming requests: the /aim-pm form is the intake; INBOX cards are its queue. Nothing enters the weekly plan from there without passing triage.
+- The board at /aim-pm is downstream of this file. `scripts/pm-push.mjs` in the berkkalelioglu.com repo reads `weekly-plan/<YYYY-Www>.md` straight from iCloud; the same script reads the inbox (`--inbox`) and closes an intake row (`--done <id> --card AIM-xx`).
 - The nudge rule is the point of the skill. A checkin that lists no nudge when a row is stalled is a failed checkin.
