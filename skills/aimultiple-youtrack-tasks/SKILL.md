@@ -5,8 +5,15 @@ description: Opens and updates YouTrack (AIM project) tasks from any chat via th
 
 # YouTrack Task Workflow
 
-Single project: AIM. Board: "AIM Researcher" (manual-add, see Failure Cases).
+Two projects. AIM is where work lives; board "AIM Researcher" (manual-add, see Failure Cases). INBOX ("Gelen İşler") is an intake queue, not a work board: cards land there automatically from the berkkalelioglu.com/aim-pm form and wait to be triaged into AIM. Never plan, estimate, or comment progress on an INBOX card.
+
 Every task is assigned to berk.kalelioglu unless the user says otherwise.
+
+## Before any task work: check the intake
+
+Run `project: INBOX #Unresolved` at the start of any session that touches YouTrack. Each open card is a request nobody has decided on yet. Name them and ask whether to open the AIM cards; do not convert silently, and do not skip the check because the session came in for something else. Triage procedure lives in `skills/aimultiple-session-pm/SKILL.md`.
+
+Converting one: read the INBOX description (sender, urgency, deadline, link, pasted message), write the AIM card in the format below with the pasted message as the source quote, then close the INBOX card from https://berkkalelioglu.com/aim-pm with the "işlendi" button so the AIM id is recorded on it.
 
 ## Task creation format
 
@@ -54,4 +61,5 @@ Do not edit the description for status; the description is the spec, comments ar
 
 - Benchmark tasks follow `aimultiple-benchmark-methodology-design` constraints; put the fairness/fake-win note in the description at creation time.
 - Session-end journaling stays in `aimultiple-cem-report`; YouTrack comments do not replace the daily log.
+- Intake and weekly plan: `aimultiple-session-pm`. An INBOX card that became an AIM card should also get a plan row if the work belongs to the current week.
 - `/save-handoff` triggers a YouTrack sync automatically (2026-08-02): when the handoff names an `AIM-xx`, the save posts the session durum comment and refreshes changed subtask States. See Step 6 in `aimultiple-context-handoff/SKILL.md`. Handoff documents for tracked work streams should therefore always name their epic.

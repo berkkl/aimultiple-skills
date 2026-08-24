@@ -133,6 +133,13 @@ If the handoff document names a YouTrack issue or epic (an `AIM-xx` reference an
 - Update subtask States that the session's work visibly changed (started -> In Progress, finished -> Done). Do not touch unrelated subtasks.
 - If the handoff names no `AIM-xx`, skip silently. Do not create issues from this step; creation stays an explicit ask.
 
+### Step 6b: Intake check (added 2026-08-24)
+
+Query `project: INBOX #Unresolved` before finishing. These are requests submitted through berkkalelioglu.com/aim-pm that nobody has triaged. A handoff that hands over an unread queue hands over a blind spot.
+
+- Any open INBOX card → list them in the handoff under "Remaining Work", one line each: `INBOX-x, kimden, tek cümle -> triyaj bekliyor`. Do not convert them here; conversion is an explicit decision, and this step is a write-up step.
+- None open → write nothing about it.
+
 ### Step 7: Tell the user
 
 Print the path to the handoff document. Say: "Handoff `<name>` saved. Type `/clear`, then `/load-handoff <name>` to continue." If Step 6 posted updates, name the issues touched in one line.

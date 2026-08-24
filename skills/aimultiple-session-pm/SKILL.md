@@ -16,11 +16,22 @@ Single source: `weekly-plan/<YYYY-Www>.md` (current ISO week; `date +%Y-W%V`). R
 
 1. Read the current week's plan file. Missing → say so, offer to create it from the user's list. Do not invent rows.
 2. One YouTrack query: `project: AIM #Unresolved for: me sort by: updated desc` (limit 20). Cross-check the states of the cards named in the plan. File and YouTrack disagree → report the disagreement, do not silently pick one.
-3. Output, 10 lines max, no essay:
+3. Gelen kutusu: `project: INBOX #Unresolved sort by: created desc`. These are requests submitted through berkkalelioglu.com/aim-pm and never triaged. Each one is unfinished business: it has no AIM card, no plan row, and nobody has decided whether it is work. Name every one of them in the checkin and say what it needs. Empty result → say nothing about it.
+4. Output, 10 lines max plus one line per untriaged INBOX card, no essay:
    - This session maps to row N / card AIM-XX (unclear → ask in one line).
    - Weekly counter: X done / Y in-progress / Z not-started (of M).
    - Nudges: every row past its hedef gün or unchanged 2+ days, by name ("6 numara iki gündür kımıldamıyor").
+   - Untriaged incoming work: `INBOX-x, kimden, tek cümle özet -> incele ve AIM kartını aç`. Do not open the card yourself in this step; say it needs opening and let the user decide when.
    - One-sentence recommendation: what this session should produce for its row to move.
+
+## Triaging an INBOX card
+
+Requests arrive from the /aim-pm form as `INBOX-x` cards in the "Gelen İşler" project, assigned to Berk. They are raw: the description holds the sender, urgency, deadline, link, and the pasted message, nothing more. Triage means deciding what the work is, not copying the request.
+
+1. Read the INBOX card. Decide with the user: real work, already covered by an existing AIM card, or not work at all.
+2. Real work → open the AIM card per `skills/aimultiple-youtrack-tasks/SKILL.md` (full description format, subsystem, priority), then add a plan row if it belongs to this week.
+3. Mark it handled on https://berkkalelioglu.com/aim-pm (the "işlendi" button takes the AIM id), which closes the INBOX card with a comment. Not work → "sil" there instead; the card is closed, not deleted.
+4. Never leave an INBOX card open after deciding. An open INBOX card means undecided, and every checkin will name it again.
 
 ## checkout (session end, or on request)
 
@@ -38,4 +49,5 @@ Single source: `weekly-plan/<YYYY-Www>.md` (current ISO week; `date +%Y-W%V`). R
 
 - Weekly summary: `aimultiple-cem-report` (summary mode reads this file first, dailies second).
 - Card conventions: `aimultiple-youtrack-tasks`.
+- Incoming requests: the /aim-pm form is the intake; INBOX cards are its queue. Nothing enters the weekly plan from there without passing triage.
 - The nudge rule is the point of the skill. A checkin that lists no nudge when a row is stalled is a failed checkin.
