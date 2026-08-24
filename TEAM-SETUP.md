@@ -14,7 +14,7 @@ git clone https://github.com/berkkl/aimultiple-skills.git ~/aimultiple-skills
 cp -r ~/aimultiple-skills/skills/* ~/aimultiple-work/skills/
 ```
 
-Güncelleme almak istediğinde: `cd ~/aimultiple-skills && git pull` ve kopyayı yenile. Kendi skill değişikliklerin varsa PR aç, herkese dağılsın.
+Bu kurulum sana zip olarak geldiyse: zip'teki `skills/` klasörünü `~/aimultiple-work/skills/` içine kopyalaman yeterli, clone şart değil; repo erişimi güncellemeler için lazım olur. Güncelleme almak istediğinde: `cd ~/aimultiple-skills && git pull` ve kopyayı yenile. Kendi skill değişikliklerin varsa PR aç, herkese dağılsın.
 
 ## 2. CLAUDE.md
 
