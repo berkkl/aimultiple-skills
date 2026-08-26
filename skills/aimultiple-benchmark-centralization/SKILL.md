@@ -174,6 +174,25 @@ Design rule: `base-<chart-id>.json` stays strict-structure so new providers or n
 
 Multiple chart-ids per benchmark are fine. One base + one prepare + one results per chart-id.
 
+### Refreshing a chart that is already published
+
+A build script that writes several variants of the same chart (raw and smoothed, per-item and
+per-period) can carry the chart-id on the wrong file. d_385 did: the live panel 182135 served the
+quarterly-average variant while `llm-price-classes-182135.json` held the per-model variant, so a
+blind rebuild-and-push would have replaced the published chart with a different one.
+
+Rules for any refresh of a live chart:
+
+1. Keep the published config in `live-baseline/<name>-<chart-id>.json`, committed, and confirm it
+   equals what the panel serves before trusting it. Ask the article owner to paste the live config
+   when you cannot read the panel.
+2. Only one generated file per chart-id. Variants that are not published get names with no chart-id.
+3. Before pushing, run an additive check against the baseline: every non-data setting deep-equal,
+   no series or point removed, no existing point's values changed, new points listed. `d_385/
+   verify_additive.py` is the reference implementation. A refresh that changes an existing point is
+   a defect unless the change is the point of the refresh and is stated as such.
+4. After the push lands, replace the baseline with the config just pushed.
+
 ### Never plot two summaries of the same measurement against each other
 
 Berkk, 2026-08-12, after Cem read a mean-rank against mean-accuracy scatter and asked whether the
