@@ -60,7 +60,7 @@ reader pass forbids wording suggestions, the register pass is entirely about wor
 
 ```bash
 codex exec --skip-git-repo-check "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
-<path/to/draft.md>" 2>&1 | tee /tmp/codex-out.txt
+<path/to/draft.md>" < /dev/null > /tmp/codex-out.txt 2>&1
 ```
 
 Let Codex READ the draft from its path rather than pasting the text in. On 2026-08-24 that is
@@ -74,11 +74,14 @@ this is not judge work and it does not burn the judge quota.
 
 ### Running it, and the failure that wastes an hour
 
-**Run it in the foreground.** Backgrounded `codex exec` returned exit 0 with the prompt echoed
-and no answer, three times in a row on 2026-08-24, which reads exactly like a broken CLI. The
-same command in the foreground with a long timeout produced a 51-finding audit. Before
-concluding Codex is broken, smoke-test it: `codex exec --skip-git-repo-check 'Reply with
-exactly: PONG'`.
+**Redirect stdin from `/dev/null`.** When stdin is a pipe that never closes, `codex exec`
+prints `Reading additional input from stdin...` and blocks there forever, producing a 39-byte
+output file and no answer. Both gate passes hung this way on 2026-08-27 until `< /dev/null`
+was added. This is the real cause of the 2026-08-24 "backgrounded Codex returns nothing"
+report, which was wrongly written up here as a foreground-versus-background rule; with stdin
+closed, background works and is the better choice, because a long pass does not fit the 600s
+foreground Bash ceiling. Before concluding Codex is broken, smoke-test it:
+`codex exec --skip-git-repo-check 'Reply with exactly: PONG'`.
 
 **Extract the answer.** Codex echoes its whole tool trace, so the output can be hundreds of
 kilobytes. The answer is the last block:
