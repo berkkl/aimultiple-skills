@@ -58,6 +58,8 @@ Run via the Workflow tool, phases in order. Targets: 60 short-question candidate
 
 ## Freeze
 
+**No-web probe (mandatory, before the manifest).** The benchmark must measure live research, not the model's knowledge base; products like structured-lookup APIs have no parametric fallback, so a memory-answerable task breaks comparability. Run the full selected set against a model with web access disabled. Any short question the no-web model answers correctly is killed and replaced from surplus. For research tasks, the no-web output goes through the claim audit; if it passes the gates with mostly supported claims, the task is not research-forcing and must be hardened (add post-cutoff factual requirements) before freeze. Record probe results in the manifest.
+
 Freezing writes an immutable manifest: set version ID, the exact 40+10 IDs, pilot question IDs (pilot items are members of the 40), the saturation formula, numeric threshold and its single pre-registered consequence, referenced product-config manifest, per-item artifact hashes, freeze timestamp. The manifest is the only input scoring accepts.
 
 - Volatile items: the capture frozen before the first product receives the item is the scoring key. Anchor volatile prompts to an absolute as-of date; exclude unanchored "most recent X" items from the pilot subset.
