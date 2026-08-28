@@ -28,7 +28,7 @@ Creating or refreshing the task set for `specs/ai-deep-research-benchmark-spec.m
 
 The generator model (Fable) is also a contestant. Three layers, all mandatory:
 
-1. **Source-first.** Every short question is derived from a primary-source document fetched during generation. The answer key is a value or quote in that document, with evidence locator. Record both the source's publication date and the fact's first-public date; both must be after the latest contestant cutoff (a fresh document restating an old fact fails).
+1. **Source-first.** Every short question is derived from a primary-source document fetched during generation. The answer key is a value or quote in that document, with evidence locator. Record both the source's publication date and the fact's first-public date; both must be after the latest contestant cutoff (a fresh document restating an old fact fails). Target facts/events from the ~60 days before the run week (Berkk rule 2026-08-28: ideally the last two months; older post-cutoff facts are fallback only, marked in the freeze manifest). Research-task scenario anchor events follow the same recency rule.
 2. **Cue lint.** A prompt is rejected if it contains the answer, the source's title or navigation phrasing, or distinctive non-entity phrase overlap with the source. Questions must be findable through the fact, not through the document's own words.
 3. **Non-contestant audit + human curation.** Before freeze, the near-final pool passes an audit by a model from a non-contestant vendor (the independent judge vendor), and a human selects the final set. Question authorship assistance is disclosed in the methodology.
 
