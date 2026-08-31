@@ -51,7 +51,7 @@ Run before delivering any draft:
 python3 skills/aimultiple-article-checklist/lint_article.py <draft.md>
 ```
 
-It checks the rules in this file that are mechanical: claim-sentence H2s, intro length, paragraphs over 430 characters, bold budget, year in a header, title-cased headers, chart description blocks, empty or oversized H2 sections, banned characters, filler. FAIL blocks delivery; WARN is the author's call. Everything it cannot check, research depth, source quality, Surfer score, and whether a takeaway is actually non-obvious, still needs a human read. **A rule enforced nowhere is not a rule: if a new structural rule lands in this file and is mechanical, add it to the script in the same edit.**
+It checks the rules in this file that are mechanical: claim-sentence H2s, intro length, paragraphs over 430 characters, name-and-number recitals that should be lists, bold budget, year in a header, title-cased headers, chart description blocks, empty or oversized H2 sections, banned characters, filler. FAIL blocks delivery; WARN is the author's call. Everything it cannot check, research depth, source quality, Surfer score, and whether a takeaway is actually non-obvious, still needs a human read. **A rule enforced nowhere is not a rule: if a new structural rule lands in this file and is mechanical, add it to the script in the same edit.**
 
 ## Four-phase review
 
@@ -94,12 +94,15 @@ Banned patterns:
 - Time-relative hooks that will rot ("interest grew X% this month"). Use absolute dates.
 - Superficial marketing distinctions ("AI-powered vs AI-native"). Cut or name the real difference.
 - Embellished facts. State the fact, then the implication.
+- **The interpretive gloss.** A sentence that tells the reader what to conclude from numbers already on the page. Cem and Berkk cut four of them from the agentic-web-exec draft on 2026-08-31: "The lead belongs to the vendor, not to one of its two interfaces", "How an interface fails differs more than how often it succeeds", "Consistency is not free", "What the extra money buys differs". The numbers carry the point. The gloss only announces that a point is coming, and it is where an LLM draft reliably editorialises.
+- **Figurative language in a results section.** "Firecrawl MCP sits in the corner both tabs call good" became "Firecrawl MCP is the lowest cost and the fastest interface in the benchmark". A metaphor costs the reader a decode step and gains nothing a plain clause would not.
 
 Numerical formatting:
 - **Three decimal places is the cap.** Cem, 2026-08-09, on the time-series-classification article: `0.8584` should have been `0.858`. A fourth digit on a benchmark score is precision theater and it makes the number harder to hold while reading. Exceptions: p-values in scientific notation, and identities where the trailing digits are the finding.
 - Consistent decimal precision across all numbers in a table. If some cells show two decimals, `1` becomes `1.00`.
 - If trailing decimals are all zero across all rows, drop them entirely. `97.000` becomes `97`.
-- Never undersell effort. If a benchmark scored 200 deliverables, do not frame it as "10 tasks".
+- Never undersell effort. If a benchmark scored 200 deliverables, do not frame it as "10 tasks". **The total belongs in the intro with its decomposition**: "attempted 3,000 tasks (100 tasks completed via 6 web interfaces across 5 runs)", not "across 100 tasks and 5 runs", which hides the panel width and leaves the reader unable to size the study.
+- Round infrastructure and hardware figures to what a reader holds. 1919 MB is 2GB. Exact provisioning belongs in the repo, not the article.
 
 Paragraph rules:
 - Open with a summary that promises the value to come.
@@ -136,6 +139,12 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 - Must be better than the intros of the top 3 Google results on at least one of: communication clarity or insight density.
 - **Say what the work actually was, not the category it belongs to.** Cem, 2026-08-19: the agentic-enterprise intro said "69 enterprise tasks in different categories", which describes any benchmark. It now says the tasks are real decisions AIMultiple's founder had to make. If the tasks are real work, the intro says so and names the areas.
 
+**Methodology section**
+- **Versions, hardware and settings go in a table.** A paragraph listing seven package versions is unreadable and unscannable. The prose around it states only what a reader needs to judge fairness: same task set, same model, same limits.
+- **Internal run-management detail does not ship.** Which runner sha produced which run, that runs 2 through 5 shared a setup, how results were recorded. It reassures the author and means nothing to the reader. If it matters for reproducibility, it belongs in the repo README.
+- **Pre-empt the arithmetic that will not add up.** When two published numbers appear to contradict, answer it in the same sentence: "(attempts exceed tasks because timed-out tasks were retried once)". A reader who spots the gap and finds no explanation stops trusting the rest.
+- **A limitation is stronger with its bound.** "Some tasks depend on what is listed at the time" invites the reader to discount the result. Adding "pass rules were written to test the format and the retrieval, not a specific listing, so a changed page does not change the score" states the limit and closes it.
+
 **Charts, tables, and data presentation**
 - Chart first, prose second. The highlighted takeaway goes below the chart. Readers scan visuals before text.
 - **Never embed a description block on a chart.** The article carries the embed shortcode and nothing else: `[nivo_charts id="177006" /]`. What the chart means, what it excludes, what it does not license the reader to conclude, all of that is body text under the chart. A caption block inside the article is not the house format and does not render.
@@ -143,6 +152,7 @@ Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimult
 - **No methodology under the chart.** How many judges scored it, how the scale works, how the resampling ran, why a task was excluded: all of it goes to Methodology. The reader came for the result. The one exception is a disclosure that changes how the chart is read (what the bars cover, what is missing from them, what reasoning effort ran), and that gets one sentence, not a paragraph. The lint counts words and items in the block and flags method verbs inside it.
 - **A summary judgment is not a takeaway.** "Opus 5 has no weak tasks", followed by three supporting numbers, is the pattern Cem killed on 2026-08-19. Write the number that carries the point: "Opus 5 won 43 of the 69 tasks and Sol won 13. No other model won more than four."
 - **Every chart states the reasoning effort it ran at.** Cem, 2026-08-18: "Bunlar max mi high mi net olmali her chart'ta. Bu her yazi icin gecerli." Put it in the chart's own `infoText` so it travels with the embed, and once under the chart in body text. If no effort was set, say that; do not upgrade a default to "high" in prose.
+- **A qualifier on what a metric measures goes in the axis legend and in the body text, and you check that it survives the default tab.** The agentic-web-exec cost chart carried "(USD, not vendor fees)" in its base `axisLeft`, but the cost tab's `afterApplied.axisLeft` replaced the legend without it, and `defaultFilterBy` was that tab, so the qualifier never rendered anywhere. A vendor read the chart as their own pricing and asked why they came out expensive. On a tabbed chart every `afterApplied` block repeats the qualifier; on mobile the legend is often empty, so the body sentence is the only copy that always shows. Cutting that sentence for length is how the disclosure disappears.
 - **Value axes take the data range plus a few points of margin, not a blanket 0-100.** Cem, 2026-08-18. A scatter whose points all sit between 30 and 55 wastes half its height on empty axis. Bars keep their zero baseline, because a truncated bar misstates the ratio it draws. Note that the AIM chart component's `attractiveCutoff` is a single fraction applied to both axes, so tightening the value axis moves the green region unless the cutoff is solved back from the value line that matters.
 - **Takeaways must be non-obvious.** "Model A scored highest" is the chart, not a takeaway. What belongs there: where two metrics disagree, where a cheap method matches an expensive one, where the ranking is unstable, where the winner's margin does not survive correction, where a result reverses inside the aggregate. If the section has no non-obvious reading, it may not need prose at all.
 - **Any disclosure the methodology requires travels with the chart into the body text.** When a statistical caveat is mandatory (interval type, panel size, what did not survive correction, which rows are excluded), it is a requirement on the section's prose, not on a caption. Verify each one landed after any restructure.

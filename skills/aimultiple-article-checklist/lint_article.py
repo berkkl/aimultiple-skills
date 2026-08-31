@@ -101,6 +101,11 @@ FINITE = (
 # A flagged sentence with a verb the list does not know is a false positive; widen the list.
 VERBISH = r"\b\w{3,}(ed|ing)\b"
 
+# A capitalised name followed closely by a number: "Oxylabs MCP at 5",
+# "Bright Data MCP moved by 3". Four distinct ones in a paragraph means the
+# author is reciting a table.
+NAME_NUM = re.compile(r"\b[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,2}\b[^.;:]{0,24}?\b\d+(?:\.\d+)?\b")
+
 
 def main(path, strict=False):
     text = open(path).read()
@@ -227,6 +232,15 @@ def main(path, strict=False):
         visible = re.sub(r"\[efn_note\].*?\[/efn_note\]", "", p, flags=re.S)
         if len(visible) > 430:
             warn("paragraph over 430 characters", visible[:70] + "...")
+        # Four or more named things each carrying their own number is a list the
+        # author wrote as a sentence. The reader cannot compare values strung
+        # through prose; they scan a list.
+        named = set()
+        for m in NAME_NUM.finditer(visible):
+            named.add(re.match(r"[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,2}", m.group(0)).group(0))
+        if len(named) >= 4:
+            warn("%d name-and-number comparisons in one paragraph; use a list"
+                 % len(named), ", ".join(sorted(named)[:4]))
 
     # ---- bold budget ----
     bold = sum(len(m) for m in re.findall(r"\*\*(.+?)\*\*", text, re.S))
