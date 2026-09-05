@@ -25,10 +25,16 @@ Record fields and their rules are in [[aimultiple-benchmark-centralization]]. Tw
 - `POST /benchmark/assign` writes `article_url` and `page_title`, but a **stale URL title cannot be
   fixed through the API**: it is corrected by emptying the field in Houston and saving, after which
   the system refills it. Do not assume `assign` repaired a title; check the record.
-- **UNVERIFIED, confirm before relying on it:** the API surface below has no create-table call. Which
-  call (or which Houston action) creates `b_<id>_results` under the new flow is the one open
-  question. Verify it against a live account before scheduling a push, and write the answer here.
-  Until it is confirmed, the preview-CSV handoff below is still the fallback.
+- **CONFIRMED 2026-09-05 (Confluence + OpenAPI):** the table is created by us, in three calls:
+  `POST /benchmark/create` opens the record and returns the slug (`b_NNN`, server-allocated, cannot be
+  chosen); `GET /benchmark/schema-prompt?format=raw` returns the prompt that turns a plain description
+  into the table JSON (fetch it fresh every time, the type allowlist and relation targets are filled at
+  request time); `POST /benchmark/table/create` with that JSON plus `benchmark_id`, first with
+  `dry_run:true`, then for real. The API key needs schema-management permission (probe: a `table/create`
+  dry run on a nonexistent slug must answer "not found", not "schema management not allowed").
+  **The full procedure, the measured server traps and the feed safety ladder live in
+  [[aimultiple-benchmark-push]]**; this skill keeps the contract and `upload_to_db.py` for the repos
+  that already have tables. The preview-CSV handoff to the tech team is retired.
 
 ## API surface
 
@@ -44,8 +50,18 @@ Base URL: `https://research-api.test.v5.aimultiple.com` (test env). Override wit
 | POST /benchmark/shared-tables  | List shared relational tables. |
 | POST /benchmark/list           | Benchmarks owned by `company_id`. |
 | POST /benchmark/top-list       | Leaderboard projection. |
+| POST /benchmark/create         | Register a benchmark (name, description, responsible, type, urls[]). Returns the slug. Record only, no table. |
+| GET /benchmark/schema-prompt   | The table-design prompt (`?format=raw`). Re-fetch for every new table. |
+| POST /benchmark/table/create   | Create `<slug>_results` (+ `_info`, aux tables) from the prompt's JSON. `dry_run:true` first. Needs schema-management on the key. |
+| POST /benchmark/table/update   | Declarative: the payload is the whole table; a missing column is a drop request (blocked unless `allow_drop:true`); non-additive changes back up to `bak_<table>_<ts>` first. `indexes` omitted = untouched, `[]` = drop all. |
+| POST /benchmark/all            | The registry itself (search over name/slug/responsible/url, `status: active|passive|all`). Use it to find existing records before taking a new id. |
+| POST /benchmark/urls           | Pages a benchmark is published on. |
+| POST /benchmark/unassign       | Remove a published URL (row kept, marked removed). |
+| POST /benchmark/update         | Edit name/description/responsible/status/downloadble/list_query. `status:0` = outdated. Slug and id never change. |
 
-`type` is always `benchmark` for our work. The enum also has `price` and `data` but they are out of scope today.
+Feed has two newer options: `data_version` per row (decimal, defaults to 1; the only way to supersede wrong rows, since there is no delete) and `autoCreateRelation` (auto-creates unknown lookup values as `status=2` rows in the shared table; **keep it false**, resolve names first). Feed is atomic per call: a failed batch writes nothing.
+
+`type` is `benchmark` for measurements, `price` for price indexes, `data` for vendor lists and market maps. It fixes the slug prefix (`b_`, `p_`, `d_`) and can never be changed afterwards, so choose it at `create` time.
 
 `id` is integer for `describe`, `feed`, `top-list`. It is a string for `get` (the integer as a string, or a shared table name like `"companies"`). It is `b_<int>` for `assign`. `upload_to_db.py` handles the casts.
 
@@ -84,6 +100,11 @@ The `upload_to_db.py` client handles boolean and int coercion automatically, but
 
 ## Procedure (run from inside the repo)
 
+Two cases. **A table already exists** (b_327, b_328, b_329 and every repo with a `benchmark.toml`): the
+steps below with `upload_to_db.py`. **A new benchmark with no table yet:** run [[aimultiple-benchmark-push]]
+instead (record, prompt, `table/create` dry run, feed ladder); come back here only for the contract.
+Either way, before any feed: `get` first, feed has no idempotency.
+
 ```bash
 export AIMULTIPLE_BENCHMARK_API_KEY=...
 
@@ -116,14 +137,14 @@ python upload_to_db.py assign
 ## Failure modes & server gotchas
 
 - **401 on any non-authorize call:** token expired. Re-run any subcommand; the client re-authorizes automatically.
-- **`Invalid benchmark id or type`:** the id does not exist in the DB. Take the id in Houston first (see the ownership section above); an id that exists in the registry but has no table still fails here.
+- **`Invalid benchmark id or type`:** the id does not exist in the DB. Register it with `POST /benchmark/create` (see the ownership section); an id that exists in the registry but has no table still fails here until `table/create` has run.
 - **`insertCount` less than CSV row count:** rows silently rejected. Re-describe and diff headers. FK mismatches are the usual cause.
 - **522 or unexpected 301:** base URL is wrong. Confirm `AIMULTIPLE_BENCHMARK_API_BASE`.
 - **DNS works but Cloudflare 522:** the test environment is down; check with tech team before retrying.
 - **Cloudflare 403 "Request forbidden by administrative rules":** WAF rate-limit triggered by rapid API calls (~15 in a minute, e.g. during a wipe + reupload cycle). Wait several minutes or connect to VPN. Hits every endpoint including `/authorize`.
 - **`--test` mode broken on server:** returns `Database connection [new_benchmarks_test] not configured`. Push directly without `--test`; the test env URL already targets the test DB. Skip steps 3 in the Procedure above and go straight to step 4.
 - **`limit=100000` server bug:** `/benchmark/get` with `limit=100000` silently returns only 45 rows (likely integer overflow). The client uses `limit=10000` in `validate` to work around this. If you hand-call `/get` for shared tables, use `limit=10000` not `100000`.
-- **No idempotency on `/benchmark/feed`:** a second push of the same rows creates duplicates. No delete endpoint exists. If you push twice by accident, ask tech team to wipe the benchmark id and re-push from a clean state.
+- **No idempotency on `/benchmark/feed`:** a second push of the same rows creates duplicates. No delete endpoint exists. Recovery is `data_version`: push the corrected rows with a higher version and set `list_query` on the record so downloads only see the latest; wiping a table is still a tech-team request.
 - **Freshly created tables may not be empty:** tech team can seed the table with the preview/schema CSV while creating it (happened on b_238, 2026-07-08: table pre-seeded with all 8 rows a day before the "official" push, result was 16 identical rows). Always run the step-2b `get` check before feeding.
 - **Booleans stored as 0 by default:** see Pre-push transforms above. The patched `upload_to_db.py` in this skill's template handles `True`/`False` strings correctly; older copies of the script may not.
 

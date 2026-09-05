@@ -8,13 +8,13 @@ description: |
 
 ## Scope vs other skills
 
-This skill covers project structure, audit checklist, preview generation, and the chart pipeline. For the API contract (describe / feed / get / assign, token caching, `upload_to_db.py`), use [[aimultiple-benchmark-database]]. For spec validation before a benchmark is implemented, use [[aimultiple-benchmark-preflight-check]].
+This skill covers project structure, audit checklist, the DB gate, the inventory of unpushed benchmarks, and the chart pipeline. For opening a record and table and feeding a new benchmark, use [[aimultiple-benchmark-push]]. For the API contract (describe / feed / get / assign, token caching, `upload_to_db.py`), use [[aimultiple-benchmark-database]]. For spec validation before a benchmark is implemented, use [[aimultiple-benchmark-preflight-check]].
 
 The three skills layer:
 
 1. Preflight check validates the design before code.
-2. Centralization (this skill) validates the repo + CSV + charts before push.
-3. Database skill handles the API push itself.
+2. Centralization (this skill) validates the repo + CSV + charts and raises the DB gate.
+3. Benchmark-push opens the record and table and feeds a new benchmark; the database skill holds the contract and the legacy client.
 
 ## Folder layout
 
@@ -244,7 +244,7 @@ Run before pushing the init commit. `scripts/audit.py` automates items 1-9 and 1
 7. `scripts/build_db_csv.py` produces `output/db-ready.csv` and is idempotent (md5 stable on rerun).
 8. `scripts/build_preview.py` produces `output/preview.csv` + `output/db-types-proposal.csv`.
 9. Boolean lint passes (no `True`/`False` strings in numeric columns, no `N/A` in numeric columns).
-10. `python upload_to_db.py describe` succeeds (table exists), OR `preview.csv` + `db-types-proposal.csv` are ready to forward to tech team.
+10. `python upload_to_db.py describe` succeeds (table exists), OR the record is registered and `schema.json` has passed a `table/create` dry run ([[aimultiple-benchmark-push]]).
 11. All FK values in the CSV resolve in the shared table (`python upload_to_db.py validate`).
 12. Every model/provider used in the CSV exists in the relevant shared table. If not, list the missing entries for the tech team to add.
 13. `git add --dry-run b_<id>/` shows no data, output, venv, cache, or agentic-md paths.
@@ -256,10 +256,20 @@ Run before pushing the init commit. `scripts/audit.py` automates items 1-9 and 1
 2. Aggregate into `output/db-ready.csv` via `scripts/build_db_csv.py`.
 3. Generate `output/preview.csv` + `output/db-types-proposal.csv` via `scripts/build_preview.py`.
 4. Run `python scripts/audit.py`. Fix anything it flags.
-5. Take the benchmark id in Houston and fill the record (Name, Description, URL; leave URL title empty). If the table for that id does not exist yet, create it under the new flow, and fall back to forwarding `preview.csv` + `db-types-proposal.csv` to the tech team only while that call is unconfirmed. Missing shared-table entries (models, companies) still go to the tech team either way.
-6. Once the table exists: `validate → upload → get → assign` via `upload_to_db.py`. See [[aimultiple-benchmark-database]].
+5. **DB gate (stop here and tell Berkk).** `output/db-ready.csv` exists, so the benchmark now needs a Houston record and a table before anything else happens. Say it in one line: "db-ready.csv hazır, Houston kaydı + tablo açılacak (AIM-xx)". Berkk opens the record and the table himself; the session prepares what he needs through [[aimultiple-benchmark-push]]: registry search for an existing record, `create.json` (name, description, type, live URL, `page_title` empty), the fresh schema prompt, `schema.json`, and the `dry_run` plan. Missing shared-table entries (models, companies) still go to the tech team; never `autoCreateRelation`.
+6. Once the table exists: rows built by a parser script, then the feed ladder (validate, backup, canary, group by key signature, verify) from [[aimultiple-benchmark-push]]. Repos that already have a table keep `validate → upload → get → assign` via `upload_to_db.py` ([[aimultiple-benchmark-database]]). A benchmark row in the weekly plan is not done until this step is.
 7. Build `output/results-<chart-id>.json` for every chart via `nivo/prepare-<chart-id>.py`. Upload to Management Panel.
 8. Commit as `<benchmark-slug> init`. No Claude attribution. Push to `aimultiplev4/team-benchmarks` main.
+
+## Inventory: benchmarks that never reached the DB
+
+There are more published benchmarks than registry records. The gap is closed one benchmark at a time, and the list is the deliverable that makes it visible (AIM-75).
+
+1. Registry side: `python3 skills/aimultiple-benchmark-push/scripts/api.py all` with `status: all` (page through it); keep slug, name, url, type, status, newest-row date.
+2. Our side: every benchmark folder we own (`team-benchmarks/*`, the benchmark folders in this workspace, `scripts/web-exec-benchmark`, older ones like `hallucination-benchmark/`, `ConfidenceInterval/`) and every live AIMultiple article that carries a benchmark chart or table.
+3. Join on article URL. Four outcomes per benchmark: **record + table + rows** (done), **record without table or without rows** (fix via `table/create` / feed), **no record** (full push), **not published** (skip, note why).
+4. Write the table to `handoffs/benchmark-centralization.md` and open one plan row per missing push; push order is smallest and most stable first.
+5. Duplicates count as defects (`b_238` and `b_333` both tabular-models): decide which survives, set the other `status:0` with `/benchmark/update`.
 
 ## Migrating an existing benchmark folder
 
@@ -293,7 +303,8 @@ Copy into the benchmark repo, do not symlink.
 
 ## Integration with existing skills
 
-- [[aimultiple-benchmark-database]] — API contract, upload procedure, repo-template gitignore + benchmark.toml + upload_to_db.py.
+- [[aimultiple-benchmark-push]] — new record + table (create, schema prompt, table/create dry run) and the feed safety ladder; adapted from Ekrem Sarı's benchmark-push on 2026-09-05.
+- [[aimultiple-benchmark-database]] — API contract, upload procedure for repos that already have tables, repo-template gitignore + benchmark.toml + upload_to_db.py.
 - [[aimultiple-benchmark-preflight-check]] — pre-implementation spec validation.
 - [[feedback-benchmark-db-row-shape]] — why one row per provider with mean/std columns.
 - [[project-benchmark-centralization]] — overall centralization context.
