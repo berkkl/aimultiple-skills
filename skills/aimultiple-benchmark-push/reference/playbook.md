@@ -121,6 +121,10 @@ ek olarak, AIMultiple tarafında ZORUNLU:
   ayracı tek değerliyken bile dursun; ikinci nesil veri geldiğinde tabloyu değiştirmek zorunda kalma.
 - **R4.8 — Sistem kolonlarını YAZMA:** `id`, `status`, `created_at`, `updated_at`, `deleted_at`,
   `data_version`, `insert_api_key_id`. (OpenAPI 6, prompt 7 sayıyor — **7'sini de yazma.**)
+- **R4.10 — Yorumlarda `;` ve `:` KULLANMA** (tablo comment'i ve kolon comment'leri). Sunucu DDL'i ayraç
+  taramasından geçiriyor: `;` veya `:` içeren bir comment `statement contains a separator` ile bütün
+  `table/create`'i düşürüyor (2026-09-05, b_393 ile ölçüldü; `applied: []`, yani kısmi yazım yok, düzeltip
+  tekrar gönderilebilir). Virgül ve parantez serbest.
 - **R4.9 — Bilimsel şartı taşıyan kolonu düşürme.** Ölçümün geçerliliğini sınırlayan bir koşul varsa
   (harness sürümü, degraded bayrağı, payda farkı) o kolon tabloda durmalı; yoksa sıralama elmayla
   armudu karşılaştırır ve kimse fark etmez.
@@ -235,6 +239,7 @@ prod'a yazıyor. Sistemin tek geri alınamaz adımı budur.** Bu yüzden kendi m
 | `url is not assigned to this benchmark` | Host normalizasyonu — saklanan hâli `research.` olabilir |
 | `nothing to update` | `update` fark görmedi (kısmi patch) |
 | HTTP 404 tüm uçlarda | Base URL'de çift slash (K3) |
+| `statement contains a separator` | Bir comment'te `;` ya da `:` var (R4.10); hiçbir DDL uygulanmadı |
 
 ---
 
