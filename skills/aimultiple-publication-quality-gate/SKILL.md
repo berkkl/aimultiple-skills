@@ -75,8 +75,10 @@ product count, a mislabelled standard deviation and two internal contradictions.
 
 `--skip-git-repo-check` is required: the AIM Articles workspace is not a git repository, and
 without it `codex exec` prints "Not inside a trusted directory" and exits 0 with no output.
-Use `-c model_reasoning_effort=xhigh` for a long article. Use the default `~/.codex` profile:
-this is not judge work and it does not burn the judge quota.
+Use `-c model_reasoning_effort=xhigh` for a long article. Use the default `~/.codex` profile. It is the same agentbench@ account as the judge profile and the
+benchmark VPS, so the gate draws on the judge quota: on 2026-09-06 both passes died on the usage
+limit right after a 16-hour judging campaign. Do not run the gate while a campaign is live, and
+expect to wait for the window to reset after one.
 
 ### Running it, and the failure that wastes an hour
 
