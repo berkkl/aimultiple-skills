@@ -59,9 +59,15 @@ reader pass forbids wording suggestions, the register pass is entirely about wor
 | Register | `slop-prompt.md` | colon reveals, meta-statements, aphorisms, personification, invented labels, deletable sentences |
 
 ```bash
-codex exec --skip-git-repo-check "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
+codex exec --skip-git-repo-check -m gpt-5.6-sol "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
 <path/to/draft.md>" < /dev/null > /tmp/codex-out.txt 2>&1
 ```
+
+**Always pass `-m gpt-5.6-sol`.** On 2026-09-06 the account's default model had been switched
+server-side to `gpt-6-astra`, which the Mac's codex-cli 0.144.6 cannot run, so a bare
+`codex exec` failed with `400 The 'gpt-6-astra' model requires a newer version of Codex`. The
+gate is defined as a Sol read anyway; naming the model makes the run reproducible and immune
+to the default moving again.
 
 Let Codex READ the draft from its path rather than pasting the text in. On 2026-08-24 that is
 what let it cross-check figures against the repo's chart JSONs and findings files and catch a
