@@ -38,7 +38,7 @@ All of the following must be true:
 3. Vendor recommendations include explicit trade-offs, not absolutes.
 4. Pricing references include their as-of date.
 5. Budget feasibility is present when a recommendation implies spend.
-6. Anti-slop checks (`aimultiple-anti-slop`) pass.
+6. Anti-slop checks (`aimultiple-anti-slop-writing`) pass.
 7. Inference statements are labeled as inference, separate from observed facts.
 8. Open questions are listed as open questions, not buried in prose.
 9. Every major recommendation has a risk-and-limit note.
@@ -152,5 +152,5 @@ is not finished.
 
 ## Integration
 
-- Consumes outputs from `aimultiple-anti-slop`, `aimultiple-source-validation`, and `aimultiple-article-checklist`.
+- Consumes outputs from `aimultiple-anti-slop-writing`, `aimultiple-source-validation`, and `aimultiple-article-checklist`.
 - This is the last skill in the chain. Nothing runs after it.

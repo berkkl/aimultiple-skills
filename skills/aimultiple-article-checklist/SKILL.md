@@ -111,7 +111,7 @@ Paragraph rules:
 
 Originality test: if deleting a sentence changes nothing, delete it. If it could appear in any article on any topic, rewrite it around a concrete fact.
 
-Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimultiple-anti-slop` skill and should be loaded in parallel.
+Detail: see `references/writing.md`. Generic anti-slop rules live in the `aimultiple-anti-slop-writing` skill and should be loaded in parallel.
 
 ### Phase 3. Structure, linking, SEO, sponsorship
 
@@ -275,6 +275,6 @@ Be specific. "Fix the intro" is not actionable. "Rewrite sentence 2 of the intro
 
 ## Integration
 
-- Load `aimultiple-anti-slop` for sentence-level enforcement.
+- Load `aimultiple-anti-slop-writing` for sentence-level enforcement.
 - Load `aimultiple-source-validation` when checking claim evidence.
 - Load `aimultiple-publication-quality-gate` for the final pre-share sign-off (this skill covers AIMultiple-specific publishing mechanics; the quality gate covers generic research-output standards).

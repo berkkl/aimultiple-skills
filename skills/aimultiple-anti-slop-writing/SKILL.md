@@ -31,6 +31,17 @@ Use this skill for every sentence intended for publication.
 17. Write for a global audience. If a non-native English reader could read a phrase literally and be confused (e.g. "depressed backend"), rewrite it plainly.
 18. In data writeups, a takeaway must say something the chart does not already show. Do not restate the visible ranking ("X is second, Y is last"); surface the non-obvious finding (a cross-axis divergence, an inversion, an independence). Derive any causal claim from the source data, not a guess.
 
+## Banned patterns carried over from the retired `aimultiple-anti-slop` skill (merged 2026-09-08)
+
+- Filler words: basically, simply, just, very, more and more, these days, in fact, over time, for a long time, this article, our article. Cut.
+- Salesy adjectives: intuitive, amazing, awesome, huge, enormous. Drop unless quoting.
+- Passive voice above about 5% of sentences. Default to active.
+- Time-relative claims that rot: "this month", "recently announced", "as of December 2025" as a hook. Use an absolute date or cut.
+- Marketing distinctions presented as taxonomy: "AI-powered vs AI-native", "next-generation vs traditional". Cut, or name the actual difference.
+- A section link whose text only names the section. Put the claim in the link text.
+- Paragraphs over about 430 characters (the lint warns at this length).
+- Density test: a paragraph with no measurable fact gets rewritten around one; a sentence a generic article on any topic could contain gets cut or sharpened.
+
 ## Sentences must parse before they are cut
 
 Cem, 2026-08-09, on the published time-series-classification article: "Devrik cumleleri duzeltirsen biraz AI-slop'umsulugu azalir." The article had already been through a Claude cut pass. The cut is what broke it.
