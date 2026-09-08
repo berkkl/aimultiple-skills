@@ -28,8 +28,11 @@ The same name is reused across sessions. `/save-handoff save-system` on session 
 
 All handoffs live in `handoffs/` in the current working directory.
 
-- `handoffs/<name>.md` — the handoff document for that work stream
+- `handoffs/<name>.md` — the **core** brief for that work stream (always loaded)
+- `handoffs/<name>.backlog.md` — optional overflow: deferred remaining work, nice-to-haves, long reference notes. Not auto-loaded on `/load-handoff`.
 - `handoffs/LATEST` — contains the name of the most recently saved handoff (so `/load-handoff` with no argument loads the last one)
+
+Prefer keeping the core self-contained and scannable. When Remaining Work exceeds about 5 priority items, or the core grows with encyclopedic detail the next session does not need on cold start, move overflow into `.backlog.md`. If backlog would be empty, do not create the file.
 
 ## Always-On Monitoring (enforced via CLAUDE.md)
 
@@ -84,7 +87,7 @@ The new handoff must be a single, self-contained document. A fresh session readi
 
 ### Step 4: Write the document
 
-Save to `handoffs/<name>.md`. Create `handoffs/` if it does not exist.
+Save to `handoffs/<name>.md`. Create `handoffs/` if it does not exist. If there is deferred work or bulk notes, write `handoffs/<name>.backlog.md`; otherwise omit or remove an empty backlog.
 
 Write the name to `handoffs/LATEST`, overwriting previous content.
 
