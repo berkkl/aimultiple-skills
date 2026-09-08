@@ -29,6 +29,19 @@ Rules:
 - One short `Why:` line is allowed under a pair ONLY when the edit fixes a factual error or a chart/text contradiction. Otherwise no commentary.
 - No preamble, no "Here are the edits", no summary paragraph. Lead with the first heading.
 
+## Plain text, verified against the live page (added 2026-09-08)
+
+The editor applies OLD/NEW by find-and-replace inside WordPress, where the text is plain. On 2026-09-08 a
+package whose OLD lines were verified "matching" still failed for the editor because of markdown:
+
+- No markdown in OLD or NEW: no `[text](url)` links (write the text, add "link on X stays" as a note),
+  no `\*` escapes, no leading `- ` on list items (say "list, one line per item" once), no `|` table
+  rows inline with `OLD:`. A table is a block: `OLD:` on its own line, then the rows; same for `NEW:`.
+- Chart footnotes are chart `infoText`, not post body. Mark them so the editor does not search for them.
+- Verify every OLD line against the live page before delivering, and fetch the page with a cache-buster
+  (`?nocache=<epoch>`): firecrawl returned the pre-update copy for a page that had been updated an hour
+  earlier. Normalise curly quotes and links before comparing, then report exact misses.
+
 ## AIMultiple house structure (chart-first)
 
 Cem's rule: the chart comes first because it draws more attention than a wall of text. Results and numbers are stated AFTER the chart, not before it.

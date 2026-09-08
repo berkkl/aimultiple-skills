@@ -118,6 +118,15 @@ Long per-event rows are acceptable only when the cell itself is the natural unit
 
 Use the language's CSV writer with RFC 4180 escaping. Python `csv.writer`, Node `csv-stringify`, PHP `fputcsv`. Never hand-concatenate strings.
 
+### Reasoning tokens are output tokens (added 2026-09-08)
+
+opencode's `session.tokens_output` excludes reasoning; it keeps `tokens_reasoning` separately. OpenRouter
+bills reasoning at the output rate, and opencode's own `cost` includes it. A cost recomputed from
+`tokens_output` alone is 15-46% low on every reasoning model (measured on agentic-enterprise v2, eight
+arms). Rule: `tokens_out` in db-ready.csv is `tokens_output + tokens_reasoning` for opencode arms;
+Codex, Claude Code and Grok Build already report output with reasoning inside. Check by comparing the
+repriced figure with the program's own cost; on a matching price list they agree to the cent.
+
 ## Preview CSV for tech-team review
 
 Before asking tech team to create the `_results` table, produce two sidecar files:

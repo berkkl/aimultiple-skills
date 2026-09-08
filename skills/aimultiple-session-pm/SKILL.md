@@ -2,7 +2,7 @@
 name: aimultiple-session-pm
 description: |
   Session-level project management against the weekly plan. checkin (default) reads
-  weekly-plan/<week>.md + YouTrack and reports where this session sits in the week:
+  the current weekly-plan file + YouTrack and reports where this session sits in the week:
   which card, what stage, what is stalled, what to do next. checkout updates the plan
   row and posts the card's durum comment. Use at session start, or when the user says
   checkin, checkout, pm, neredeyiz, durum, haftalık plan, hangi taskteyiz.
@@ -42,6 +42,8 @@ Requests arrive from the /aim-pm form as `INBOX-x` cards in the "Gelen İşler" 
 4. Friday checkout → offer to generate the Cem weekly from this file (aimultiple-cem-report summary format, flat bullets).
 
 ## Failure cases
+
+- **Codex / missing YouTrack MCP:** The weekly plan and board push are agent-independent. Read the plan locally and use the existing site's `npm run pm:inbox` for board intake when available. This does not replace a direct YouTrack query: disclose that card states and the YouTrack INBOX were not independently checked. For an authorized board update, run `npm run pm:push -- <YYYY-Www> --dry`, then push the same week and verify the response. Never report a card comment/state change based only on a successful plan push. Keep credentials in the site's existing environment loader; do not print them.
 
 - Plan file missing mid-week: create the skeleton table, populate only from the user's own list.
 - YouTrack unreachable: run from the file alone and say so.

@@ -187,6 +187,11 @@ prod'a yazıyor. Sistemin tek geri alınamaz adımı budur.** Bu yüzden kendi m
   ya hedef tablodaki mevcut adı kullan, ya Vedat'tan satır iste.
 - **R7.2 — Lookup adları benzersiz olmayabilir.** `ai_models.name`'de `llama-4-maverick` ve `glm-4.7`
   üçer satır. İlişkinin hangi id'ye bağlandığını feed sonrası `get` ile doğrula.
+- **R7.2a — `ai_models.name` noktalı yazılır.** API model id'si `claude-fable-5-1` iken Houston'da
+  `claude-fable-5.1` (id 1630). Aynı model, ad kuralı farklı; builder'da NAME_MAP ile eşle, yeni satır
+  isteme. Gerçekten olmayan modeli (`inkling-small`) ertelenen dosyaya ayır, ladder'ı 16 satırla koş.
+  `describe` kolonları `"ad tip nullability"` dizesi olarak döner, JSON nesnesi değil; karşılaştırma
+  script'i buna göre parse etsin (b_396, 2026-09-08).
 - **R7.2b — `feed` ATOMİK.** Hatalı batch'te hiçbir satır yazılmaz (`"no data inserted because of
   errors"`). Yani bir hata aldığında güvenle düzeltip tekrar gönderebilirsin — kısmi yazma yok.
   Bu, `feed`'in tek iyi haberi; yine de başarılı bir insert geri alınamaz.
