@@ -35,7 +35,8 @@ one are different states and are reported separately.
 **2. Judges rank, they do not grade.** Ask for a full forced permutation of all arms
 on one item. No ties, no absolute quality points, no partial rankings. A judge asked
 "how good is this, out of 10" is answering a different question each time it is asked;
-a judge asked "order these six" is answering the same one.
+a judge asked "order these six" is answering the same one. Exception: adding one
+arm to a field that is already judged uses pairwise insertion (below).
 
 **3. Malformed output is rejected, never repaired.** Strict JSON, exact permutation, no
 extraction from prose, bounded retries, then abort. Repairing a judge's output silently
@@ -65,7 +66,7 @@ neither vendor produced. Do not measure it by dropping the conflicted judge and
 comparing to the panel, which measures the single-judge artifact in rule 4 instead.
 
 **7. The scale is relative and must be labelled as such.** Aggregate by Borda across
-judges and items. The field mean is 50 by construction. A 66 means the arm's work sits
+judges and items (rank points per task for a field extended by insertion). The field mean is 50 by construction. A 66 means the arm's work sits
 above the middle of this field, not that 66% of it was right. Never compare a judged
 score to a judged score from another benchmark, another field of arms, or another task
 set. State this in the article, next to the first number.
@@ -89,6 +90,25 @@ the vendor feedback instead of manufacturing a headline.
 response, the prompt hash, the judge's resolved model id and effort setting, and the
 account or profile it ran under. A judged number without its request and response is
 the defect this suite has already had to rebuild once.
+
+## Adding a model to a judged field
+
+Adopted 2026-09-23, not yet implemented; until the code and both acceptance tests exist,
+adding a model means a full panel re-run. Full text: JUDGING.md, "Adding a model to a
+judged field".
+
+A full panel re-ranks every arm, so one new arm costs a whole campaign (agentic-enterprise:
+1,142 calls, ~17 h). Instead keep the existing per-task order and insert the new arm by
+binary search: compare with the middle arm, continue in the half it belongs to, at most
+5 comparisons for 17 arms. Each comparison: both judges, anonymized, opposite pair order,
+a split counts as a tie and adds one comparison with the neighbour. Two random distant
+comparisons per task; a contradiction sends that task to a full re-run. Score by rank
+points per task averaged over tasks, never by win counts (they follow the search path).
+Bradley-Terry adds nothing while every task has a complete order. Rank points and
+row-level Borda are different scales: move a whole table at once, with Cem's approval
+and a changelog line. Before first use: a code test (re-insert existing arms, they must
+land where they are) and an agreement test (~100 existing pairs judged pairwise against
+the base order, threshold fixed in advance).
 
 ## Transport
 
