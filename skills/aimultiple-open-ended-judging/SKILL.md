@@ -4,6 +4,9 @@ description: |
   The standard for scoring open-ended benchmark tasks, where no answer key exists and the deliverable is a document, an analysis or a piece of work rather than a checkable value. Use when designing or running any model-as-judge evaluation, choosing a judge panel, or reporting a judged leaderboard. Without this skill, judged scores drift into single-judge opinion, absolute numbers that mean nothing across benchmarks, and rankings that move when the resolution convention changes.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Open-Ended Judging
 
 The canonical text is `docs/JUDGING.md` in the agentic-enterprise-benchmark repo. It

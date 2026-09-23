@@ -3,6 +3,9 @@ name: aimultiple-youtrack-tasks
 description: Opens and updates YouTrack (AIM project) tasks from any chat via the YouTrack MCP. Use when the user says "youtrack'e aç", "task aç", "youtrack güncelle", "durum güncelle", references an AIM-xx issue, or forwards a Cem/Sedat message that should become tracked work.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # YouTrack Task Workflow
 
 Two projects. AIM is where work lives; board "AIM Researcher" (manual-add, see Failure Cases). INBOX ("Gelen İşler") is an intake queue, not a work board: cards land there automatically from the berkkalelioglu.com/aim-pm form and wait to be triaged into AIM. Never plan, estimate, or comment progress on an INBOX card.

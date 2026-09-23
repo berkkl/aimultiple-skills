@@ -4,6 +4,9 @@ description: |
   Maps the competitive landscape for a product category or market segment. Identifies key players, differentiators, pricing, target segments, and positioning. Use when preparing for a benchmark that compares vendors, or when the user needs to understand who does what in a market. Without this skill, competitor analysis is inconsistent and misses important dimensions.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Market Landscape
 
 ## Activation

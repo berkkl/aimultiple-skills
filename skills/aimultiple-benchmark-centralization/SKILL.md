@@ -4,6 +4,9 @@ description: |
   Standard project structure, README sections, .gitignore, DB-ready CSV shape, preview CSV for tech-team review, boolean lint, and the Nivo chart pipeline for benchmarks under team-benchmarks/. Activates when creating, migrating, or auditing a benchmark folder. Without this skill, repos drift in folder layout, CSVs ship with True/False strings, charts get hand-edited, and tech team gets ambiguous schema specs.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # AIMultiple Benchmark Centralization Standard
 
 ## Scope vs other skills

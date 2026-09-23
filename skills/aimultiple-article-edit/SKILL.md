@@ -6,6 +6,9 @@ metadata:
   argument-hint: "[article-slug-or-path]"
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 Propose edits to an AIMultiple article as OLD/NEW pairs. The output is a list the editor applies by hand; it is not a rewrite of the article. Arguments: $ARGUMENTS
 
 ## The format (non-negotiable)
@@ -52,7 +55,7 @@ Cem's rule: the chart comes first because it draws more attention than a wall of
 - Broader standing goal (not every task): replace walls of text with charts, tables, and tight result paragraphs. The agentic-cli and agentic-llm articles are the main targets. When editing them, prefer cutting prose over adding it.
 - Bullets are not strict on count, but every key point must survive the conversion. Do not drop facts to shorten; drop only sub-mechanisms and connective prose.
 - Not everything becomes bullets. Observation-driven sections (qualitative behavioral findings, the observatory benchmarks, per-agent deep-dives) stay as prose because takeaways flatten them. The bullet treatment is for data-chart and table sections.
-- References/sources go in WordPress footnotes via the `[efn_note]source text and URL[/efn_note]` shortcode, placed inline at the citation point (Easy Footnotes plugin). Do not use inline markdown links for external sources in published copy.
+- References/sources go in WordPress footnotes via the `[efn_note]<bare URL>[/efn_note]` shortcode, placed inline at the citation point (Easy Footnotes plugin). The note holds only the URL: no title, organisation or "Accessed" date (Berk, 2026-09-23). Explanatory footnotes may carry a sentence, as in the example below. Do not use inline markdown links for external sources in published copy.
 - Watch the wording. State the point in plain, concrete words and lead with a concrete subject. Avoid abstract framings: no "X, not Y, decides Z" and no "it's not X, it's Y" (banned globally). Avoid vague labels like "wide spread," "token use," "figures are bounds, not exact." Name the concrete thing instead: a 22-point gap, an upper bound, a floor, no prompt caching, four tasks scored 0. If a phrase sounds clever but a non-native reader could misread it, rewrite it plainly.
 - Takeaways surface findings, not the ranking the chart already shows. Do not write "X is second, Y is third" or "Z is last", that is readable off the bars. Call out the non-obvious: cross-tab divergences (high backend rank but weak frontend), surprises (a proxied agent's depressed score, with the caveat noted), inversions (cheapest tool also scores top), and independence (build rank doesn't predict compaction). If a bullet restates the visible order, cut it.
 - Per-chart analysis pass (run BEFORE writing any takeaway; do not skim). For each data chart ask, in order:

@@ -6,6 +6,9 @@ metadata:
   argument-hint: "[article-url-or-slug]"
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 Draft a social-sharing "interesting facts" block for an AIMultiple article. The output is the shareable hooks Cem posts to LinkedIn, not the article itself. Arguments: $ARGUMENTS
 
 Base path: `/Users/berkk/Library/Mobile Documents/com~apple~CloudDocs/AIM Articles/`. Save drafts under `social-share/<article-slug>-YYYY-MM-DD.md` (create the folder with `mkdir -p` if missing). Always show the block inline for copy; saving the file is secondary.

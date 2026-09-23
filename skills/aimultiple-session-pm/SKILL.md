@@ -8,6 +8,9 @@ description: |
   checkin, checkout, pm, neredeyiz, durum, haftalık plan, hangi taskteyiz.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Session PM
 
 Single source: `weekly-plan/<YYYY-Www>.md` (current ISO week; `date +%Y-W%V`). Rows: iş | kart | hedef gün | durum | kalan. Weekly Cem summaries are generated from this file, not reconstructed.

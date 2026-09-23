@@ -1,14 +1,17 @@
 ---
 name: aimultiple-benchmark-methodology-design
 description: |
-  Defines how to design fair, reproducible AIMultiple benchmarks before writing code or conclusions. Use when creating benchmark methodology, deciding metrics, selecting tasks, setting judge logic, or comparing vendors. Without this skill, benchmark results become hard to defend and easy to invalidate.
+  Defines fair, reproducible AIMultiple benchmarks. Use when designing methodology, selecting models and reasoning settings, launching or extending a comparison, choosing metrics or judges, or interpreting results.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 # Benchmark Methodology Design
 
 ## Activation
 
-Use this skill before implementing a benchmark or interpreting benchmark results.
+Use this skill before implementing or launching a benchmark, adding a model, changing run settings, or interpreting benchmark results.
 
 ## Required Design Decisions
 
@@ -27,6 +30,46 @@ Lock these decisions before running comparisons:
 11. Version locks for models, APIs, and datasets.
 12. Measurement model per provider type. If providers have different architectures (API vs. remote browser vs. agent platform), define what clock starts and stops for each type. Document this in the methodology note.
 13. Ground truth strategy. Define how ground truth is captured, when it expires, and what tolerance is applied for volatile data.
+14. Model and reasoning alignment: apply the configuration procedure below before production.
+
+## Model and reasoning alignment before production
+
+Standing preference from Berkk (2026-09-11), for both Codex-led and Claude-led
+model benchmarks: compare each participant at its strongest supported reasoning
+setting unless the user has explicitly chosen another comparison policy.
+
+1. Separate model selection from reasoning selection. For a strongest-capability
+   comparison, identify the strongest in-scope model available through the chosen
+   interface and its highest supported effort. Honor an explicitly selected model;
+   flag a conflict with the benchmark goal before launch instead of silently
+   substituting another model. A model choice alone does not select its effort.
+2. Verify the supported settings against dated primary documentation and the
+   installed CLI/SDK version. Set effort explicitly where supported. An unexplained
+   `default`, `auto`, or omitted parameter does not establish maximum effort.
+   Resolve inherited defaults and dynamic routing; record fixed or uncontrollable
+   settings as limitations requiring a scope decision.
+3. Apply the same policy across participants. Highest supported effort may be
+   named `high`, `xhigh`, or `max`; matching labels does not prove equal compute.
+   Equal cost, token budgets, or runtime is a different comparison policy that
+   must be selected before the run. Check output limits, timeouts, and tool limits
+   for restrictions that undermine the intended reasoning setting.
+4. Before production, show Berkk a compact table: tool/interface, exact model and
+   version, supported maximum, requested effort, verified effective setting and
+   evidence, and material limits or exceptions. Resolve missing choices and
+   goal/configuration conflicts before dispatch. Reuse explicit decisions already
+   made in the session; do not ask for the same approval again.
+5. Use a setup check or authorized smoke run to verify the effective configuration
+   from outgoing request settings or native session metadata. A manifest label,
+   successful response, token count, or model's self-description is not sufficient.
+   Distinguish the setting sent from any backend behavior that is not observable.
+6. Freeze the selected configuration and evidence with the run manifest. If the
+   model or effort is ignored, downgraded, or silently changed, stop new dispatches
+   for that participant and resolve the mismatch. Keep different configurations
+   separate; never relabel old results or change settings in response to low scores.
+
+The [benchmark preflight skill](../aimultiple-benchmark-preflight-check/SKILL.md)
+checks this procedure immediately before production, including added models and
+resumed runs whose configuration or runtime has changed.
 
 ## Fairness Rules
 
@@ -53,6 +96,7 @@ Produce an internal methodology note that includes:
 
 - Benchmark goal (reference the spec, do not duplicate)
 - Run configuration (runs per task, execution order, parallelism rules)
+- Model/effort comparison table, selection decisions, and effective-setting evidence
 - Timeout and retry policy
 - Environment details (OS, VM, Playwright version, geo-targeting)
 - Ground truth strategy (capture method, refresh schedule, tolerance)

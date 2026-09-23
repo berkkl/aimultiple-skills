@@ -14,6 +14,9 @@ metadata:
   argument-hint: "[benchmark-folder-path]"
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 Push a benchmark into the registry. Arguments: $ARGUMENTS
 
 **Read `reference/playbook.md` (next to this file) before the first write.** It carries the numbered

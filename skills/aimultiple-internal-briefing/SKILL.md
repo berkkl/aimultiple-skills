@@ -4,6 +4,9 @@ description: |
   Produces sourced, concise answers to internal questions from Cem or the team. Use when the task is answering a specific question, preparing a briefing, or summarizing existing research for internal consumption. Without this skill, internal answers either lack sources or balloon into full article drafts.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Internal Briefing
 
 ## Activation

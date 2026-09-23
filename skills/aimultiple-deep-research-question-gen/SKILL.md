@@ -2,13 +2,16 @@
 name: aimultiple-deep-research-question-gen
 description: |
   Generates and refreshes the task set for the AI Deep Research Benchmark: 40 short verifiable
-  questions and 10 open-ended research tasks. Source-first pipeline run via the Workflow tool:
+  questions and 10 open-ended research tasks. Source-first staged workflow:
   harvest fresh primary sources, derive questions from documents (never from model memory),
   adversarially verify with evidence, dedup, and hand a candidate pool to human curation and a
   manifest-based freeze. Use when creating the benchmark's question set, refreshing decayed
   questions, or auditing pool health. Without this skill, questions leak from the generator
   model's priors (contamination), answer keys go unverifiable, and frozen sets mutate silently.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 # Deep Research Benchmark question generation
 

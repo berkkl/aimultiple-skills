@@ -4,6 +4,9 @@ description: |
   Generates benchmark specification documents in AIMultiple's standard format. Use when creating a new benchmark spec for any vendor comparison. The spec is a customer-facing document shared with sponsors. It must be concise (3-5 pages), operational, and free of internal methodology details.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Benchmark Spec Template
 
 ## Activation

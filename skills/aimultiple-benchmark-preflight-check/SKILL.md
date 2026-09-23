@@ -1,14 +1,23 @@
 ---
 name: aimultiple-benchmark-preflight-check
 description: |
-  Validates a completed benchmark spec before implementation begins. Catches structural gaps, statistical errors, fairness violations, and unverified technical claims. Run this after the spec is drafted and before any code is written or any runs are executed.
+  Validates a benchmark spec before implementation and verifies model/reasoning alignment before production runs. Use before launch, when adding a model, or when resuming with changed settings or runtime. Catches fairness violations, statistical errors, and unverified technical claims.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 # Benchmark Preflight Check
 
 ## Activation
 
 Run this skill after a benchmark spec is complete (or after a major revision) and before implementation starts. If the spec fails any check, it is not ready for implementation.
+
+Immediately before production, repeat the model/reasoning checks in section 5a
+against the actual runner and effective configuration. Repeat them for added
+models and resumed runs with changed settings or runtime; an earlier spec pass
+does not verify the eventual execution settings. Apply this in both Codex and
+Claude Code.
 
 ## Checklist
 
@@ -46,6 +55,17 @@ Work through every item. For each, mark PASS, FAIL, or N/A. If any item is FAIL,
 - [ ] The same task scripts are used across all providers, OR per-provider adaptations are documented.
 - [ ] No provider gets a structural advantage from the test setup (e.g. testing on sites where one provider has special partnerships).
 - [ ] Latency comparison accounts for architectural differences between provider types.
+
+### 5a. Model and Reasoning Configuration
+
+Apply [the methodology skill's configuration procedure](../aimultiple-benchmark-methodology-design/SKILL.md#model-and-reasoning-alignment-before-production).
+
+- [ ] The comparison policy is explicit and consistent across participants; the standing policy is highest supported reasoning effort unless the user selected another policy.
+- [ ] The model/effort table was shown to Berkk before production; missing choices and conflicts with the stated goal are resolved, using existing explicit decisions where available.
+- [ ] Exact models, interface versions, supported maximum settings, and dated evidence are recorded. Model selection and effort selection were checked separately.
+- [ ] Effective request/session settings match the frozen table. Unresolved defaults or omitted parameters, unapproved fallback routing, and unsupported settings remain FAIL, not assumed matches.
+- [ ] Output, tool, and time limits support the selected policy; fixed or uncontrollable settings and other exceptions have an explicit scope decision.
+- [ ] Execution detects model/effort drift and stops new dispatches for the affected participant. Changed configurations cannot be merged into or relabeled as old results.
 
 ### 6. Ground Truth
 

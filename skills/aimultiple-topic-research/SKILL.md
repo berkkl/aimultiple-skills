@@ -4,6 +4,9 @@ description: |
   Researches a topic deeply using web sources and existing knowledge. Produces a fact-checked research brief for learning or benchmark preparation. Use when you need to understand a new domain before benchmarking, writing, or building a curriculum. Without this skill, research is ad hoc and prone to hallucination.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Topic Research
 
 ## Activation

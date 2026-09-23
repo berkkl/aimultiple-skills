@@ -3,6 +3,9 @@ name: benchmark-handout
 description: Write or audit a benchmark write-up as input for the AIMultiple article agent, the benchmark-mode article pipeline that turns a handout into a published article. Use ONLY when the user explicitly names that pipeline, for example "prepare this for the AIMultiple article agent", "write a handout for the article agent", "is this benchmark doc ready for the article pipeline", "audit this against the article agent's requirements". Do NOT use for general benchmark documentation, evaluation write-ups, research reports, results summaries, internal handoff documents, or any request that does not name the AIMultiple article agent or its article pipeline. Those belong to other skills, and this one encodes requirements specific to one pipeline that would be wrong elsewhere.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Benchmark handout
 
 ## Scope check first

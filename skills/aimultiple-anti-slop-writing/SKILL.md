@@ -4,6 +4,9 @@ description: |
   Enforces AIMultiple writing style for article drafts, benchmark writeups, summaries, and rewrites. Use when drafting, editing, summarizing, or making text publishable. Without this skill, copy becomes templated, low-density, and easy to flag as AI-generated.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Anti-Slop Writing
 
 ## Activation
@@ -103,7 +106,7 @@ Target: cut the first draft by half. If the cut version loses a fact, put that f
 5. Tone and natural phrasing
 6. Structural usefulness check
 7. Final anti-slop sweep
-8. **Cross-model review before finalizing.** Anthropic models do not catch their own register. Run the finished draft past a different vendor (Codex / GPT 5.6 Sol) with a reader brief, not an editor brief: does each sentence parse, does the headline claim match the statistics, is any term undefined. Procedure in `aimultiple-publication-quality-gate`.
+8. **Cross-model review before finalizing.** The author can miss its own register. Claude-led work asks Codex / GPT 5.6 Sol; Codex-led work asks Claude Code. Run the separate reader and register passes in `aimultiple-publication-quality-gate`. The reader brief checks sentence parsing, headline/statistics agreement, and undefined terms without proposing rewrites; the register brief checks wording. Keep the two briefs distinct.
 
 ## Error Scenarios
 

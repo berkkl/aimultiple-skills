@@ -3,6 +3,9 @@ name: load-handoff
 description: Load a named handoff document and resume work from where the previous session left off.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 Load and resume from a handoff document. The handoff name is: $ARGUMENTS
 
 If no name was provided, read `handoffs/LATEST` to get the most recently saved handoff name and load that.

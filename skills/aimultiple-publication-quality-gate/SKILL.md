@@ -1,27 +1,17 @@
 ---
 name: aimultiple-publication-quality-gate
 description: |
-  Cross-model Codex review of PROSE, and the final pre-publish quality gate for AIMultiple
-  outputs: articles, benchmark writeups, scorecards, vendor memos.
-
-  Use this, NOT the generic `codex-review` skill, whenever the thing being reviewed is a draft,
-  an article or any writing. `codex-review` is for source code and needs a git repo; this
-  workspace is not one. If the user says "codex review" while an article is in play, they mean
-  this skill.
-
-  Triggers, English: codex review, run it past codex, second-model review, AI-slop check,
-  language or register check, "this sounds like AI", "is it ready to publish", final draft
-  review, before external share.
-
-  Triggers, Türkçe: codexe review ettir, codexten geçir, codex'e bak, slop kontrolü, dil
-  kontrolü, üslup kontrolü, "AI gibi duruyor", "yapay zeka yazmış gibi", yayına hazır mı,
-  canlıya hazır mı, son kontrol.
-
-  Carries both review briefs (review-prompt.md for reader defects, slop-prompt.md for register)
-  and the `codex exec` recipe including the foreground-only rule. Without this skill, factual,
-  methodology and register defects survive into publication and damage AIMultiple's rankings
-  and customer trust.
+  Review AIMultiple prose before publication or external sharing: articles, benchmark
+  writeups, scorecards, and vendor memos. Use for Codex or Claude review of a draft, second-model
+  review, AI-slop, reader, language or register checks, and final publication review.
+  Turkish triggers: codexe review ettir, codexten geçir, Claude'a incelet, slop kontrolü, dil kontrolü,
+  üslup kontrolü, AI gibi duruyor, yapay zeka yazmış gibi, yayına hazır mı, canlıya hazır mı,
+  son kontrol. Includes reader and register briefs and runtime-specific CLI procedures. Source-code
+  reviews belong to the code-review workflow; this prose gate does not require a git repo.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 # Publication Quality Gate
 
@@ -48,7 +38,7 @@ All of the following must be true:
 
 ## Cross-model review (mandatory before any article is finalized)
 
-Cem, 2026-08-09: "LLM'le de bi review lazim finalize edince." The time-series-classification article was drafted and cut by Claude, read by Berkk, iterated, and still shipped with fragments, four-decimal numbers and a lede that claimed more than the corrected statistics supported. An Anthropic model does not hear its own register, so the finalize review runs on a different vendor.
+Cem, 2026-08-09: "LLM'le de bi review lazim finalize edince." The time-series-classification article was drafted and cut by Claude, read by Berkk, iterated, and still shipped with fragments, four-decimal numbers and a lede that claimed more than the corrected statistics supported. The author can miss its own register, so the finalize review runs on a different vendor.
 
 Two passes, different briefs, both required. They contradict each other on purpose: the
 reader pass forbids wording suggestions, the register pass is entirely about wording.
@@ -57,6 +47,20 @@ reader pass forbids wording suggestions, the register pass is entirely about wor
 |---|---|---|
 | Reader | `review-prompt.md` | fragments, claims that outrun the statistics, undefined terms |
 | Register | `slop-prompt.md` | colon reveals, meta-statements, aphorisms, personification, invented labels, deletable sentences |
+
+### Codex-led work: ask Claude
+
+Run both passes through Claude Code, separately, using the same briefs above.
+Follow [the Claude consultation procedure](../../codex-migration/CLAUDE-SECOND-OPINION.md)
+for the command, read-only scope, model recording, and result checks. Do not run
+the Sol command below from Codex as a substitute for independent-vendor review.
+If Claude is unavailable, the required review remains pending. An explicit user
+reviewer choice is preserved, with any authorship/independence gap disclosed.
+
+### Claude-led work: ask Codex
+
+The following Sol command, profile, model, and troubleshooting notes apply only
+when Claude is the primary worker. Codex uses the Claude procedure above.
 
 ```bash
 codex exec --skip-git-repo-check -m gpt-5.6-sol "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
@@ -80,7 +84,7 @@ benchmark VPS, so the gate draws on the judge quota: on 2026-09-06 both passes d
 limit right after a 16-hour judging campaign. Do not run the gate while a campaign is live, and
 expect to wait for the window to reset after one.
 
-### Running it, and the failure that wastes an hour
+#### Running Codex, and the failure that wastes an hour
 
 **Redirect stdin from `/dev/null`.** When stdin is a pipe that never closes, `codex exec`
 prints `Reading additional input from stdin...` and blocks there forever, producing a 39-byte

@@ -4,6 +4,9 @@ description: |
   Standardizes claim-by-claim fact checks for AIMultiple drafts, notes, and benchmark writeups. Use when asked to verify text, audit citations, or produce a fact-check deliverable. Without this skill, fact checks become ad hoc and hard to review.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Fact-Check Workflow
 
 ## Activation

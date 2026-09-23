@@ -4,6 +4,9 @@ description: |
   Governs evidence quality for AIMultiple research outputs. Use when collecting claims, citing numbers, fact-checking an article draft, or promoting a casual note into a publishable statement. Without this skill, output drifts toward weak sourcing, unverifiable market claims, and precision theater on predictions.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Source Validation
 
 ## When to use

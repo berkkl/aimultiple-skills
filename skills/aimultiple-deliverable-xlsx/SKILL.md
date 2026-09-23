@@ -4,6 +4,9 @@ description: |
   Produces formula-driven xlsx workbooks for Cem, Meir, and external reviewers. Uses Raw + Summary + Notes sheet pattern so aggregates recompute when raw cells change. Activates whenever a deliverable goes outside the working directory (Sheets import, email, vendor share). Without this skill, CSV exports keep numbers as strings, break Sheets sort/filter/SUM, and read like Python output pasted into Word.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # AIMultiple Deliverable: XLSX
 
 ## Why this exists

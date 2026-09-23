@@ -4,6 +4,9 @@ description: |
   End-to-end quality protocol for AIMultiple research articles. Covers topic research, sentence-level writing, structure, linking, Surfer SEO optimization, sponsorship handling, and WordPress publishing. Use when drafting a new article, reviewing a draft, scoring a draft against the AIMultiple standard, or deciding whether a draft is publish-ready. Without this skill, drafts drift toward paraphrase, weak sourcing, templated structure, and publishing mistakes that damage rankings or customer trust.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # AIMultiple Article Checklist
 
 ## Never name who paid for the work

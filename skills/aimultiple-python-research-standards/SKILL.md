@@ -4,6 +4,9 @@ description: |
   Enforces Python standards for AIMultiple analysis and benchmarking code. Use for scripts, parsers, benchmark runners, cost models, and research pipelines. Without this skill, experiments become non-reproducible and vendor comparisons lose credibility.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # Python Research Standards
 
 ## Activation

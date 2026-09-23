@@ -4,6 +4,9 @@ description: |
   Defines how to push benchmark results into the AIMultiple research database via the /benchmark API and how to structure a Bitbucket repo per benchmark. Activates when uploading benchmark data, creating a new benchmark repo, or migrating an existing benchmark into the centralized DB. Without this skill, results stay in ad-hoc CSVs with no fixed schema and no link to the published article.
 ---
 
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
+
 # AIMultiple Benchmark Database Upload
 
 ## Convention

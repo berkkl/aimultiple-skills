@@ -1,7 +1,10 @@
 ---
 name: save-handoff
-description: Save a named handoff document that captures the current project state for resuming after /clear.
+description: Save or update a named AIMultiple handoff with current state, decisions, remaining work, and optional backlog for resuming in a new session or Codex task.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 Save a handoff document. The handoff name is: $ARGUMENTS
 

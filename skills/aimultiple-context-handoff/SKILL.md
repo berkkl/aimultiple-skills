@@ -1,8 +1,11 @@
 ---
 name: aimultiple-context-handoff
 description: |
-  Manages context window lifecycle for long-running projects. Monitors usage, forces clean handoffs before degradation, and maintains named, cumulative project briefs that carry the full relevant history across unlimited sessions. Each handoff distills everything that matters and drops what is stale.
+  Maintains named, cumulative project briefs for long-running AIMultiple work. Save, load, or list handoffs to preserve current state, decisions, remaining work, and an optional backlog across sessions. Context monitoring follows the active runtime's available capabilities.
 ---
+
+Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
+following this skill. They replace Claude-specific tool and session behavior.
 
 # Context Window Handoff
 
