@@ -76,11 +76,19 @@ def compare(sent, got, key=None):
 
 
 def fetch(bid, btype):
-    d = api.call("get", {"id": str(bid), "type": btype, "limit": 10000})
-    if isinstance(d, dict) and d.get("status") == "error":
-        # an empty table answers "Table not found" before the first insert
-        return []
-    return api.rows(d)
+    # Page through the whole table. A single limit-10000 read silently stopped at row 10,000 on
+    # b_420 (17,600 rows, 2026-09-28): the backup was partial and the canary read-back missed rows.
+    out, page = [], 1
+    while True:
+        d = api.call("get", {"id": str(bid), "type": btype, "limit": 5000, "page": page})
+        if isinstance(d, dict) and d.get("status") == "error":
+            # an empty table answers "Table not found" before the first insert
+            return out
+        out += api.rows(d)
+        pages = (d.get("pagination") or {}).get("totalPages", 1) if isinstance(d, dict) else 1
+        if page >= pages:
+            return out
+        page += 1
 
 
 def feed(bid, btype, batch, tag):
