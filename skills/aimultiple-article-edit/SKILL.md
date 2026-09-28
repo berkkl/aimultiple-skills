@@ -45,6 +45,15 @@ package whose OLD lines were verified "matching" still failed for the editor bec
   (`?nocache=<epoch>`): firecrawl returned the pre-update copy for a page that had been updated an hour
   earlier. Normalise curly quotes and links before comparing, then report exact misses.
 
+## Benchmark update passes (added 2026-09-28, Berk)
+
+From the agentic-enterprise update package, where all four of these went wrong:
+
+- **Never propose changelog edits.** The system generates the changelog. No OLD/NEW or ADD AFTER pair touches it.
+- **FAQ answers carry no run numbers.** A number lives once, in the results or methodology, and the FAQ points there. If a live FAQ answer already carries run numbers, the edit makes it number-free instead of swapping in the new figures. The FAQ should not need an edit on the next update.
+- **No references to earlier versions of the page, and no update narration.** Readers never saw "the September 8 version", so "last on September 8 at 26.2" and "scores do not compare with the September 8 version" mean nothing to them. The same goes for "joined later", "added on September 23" and "returned". Describe the benchmark as it stands. Roster history is not body text.
+- **Takeaways come from relationships across the whole field,** meaning score against cost, time per task, token use, reasoning level and failures, plus the cost-score frontier. How a newly added model compares with its predecessor is not a key takeaway.
+
 ## AIMultiple house structure (chart-first)
 
 Cem's rule: the chart comes first because it draws more attention than a wall of text. Results and numbers are stated AFTER the chart, not before it.
