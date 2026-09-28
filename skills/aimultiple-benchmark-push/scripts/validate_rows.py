@@ -21,7 +21,8 @@ SYSTEM = {"id", "status", "created_at", "updated_at", "deleted_at", "data_versio
           "insert_api_key_id"}
 AUTO = {"data_version"}                      # optional on feed, server defaults it to 1
 INT_T = {"tinyint", "smallint", "mediumint", "int", "bigint"}
-LINE = re.compile(r"^(\S+)\s+(\S+?)(?:\((\d+)(?:,(\d+))?\))?\s+(not null|nullable)$")
+# "unsigned" is a separate word in describe output ("tinyint unsigned not null", b_420, 2026-09-28)
+LINE = re.compile(r"^(\S+)\s+(\S+?)(?:\((\d+)(?:,(\d+))?\))?(\s+unsigned)?\s+(not null|nullable)$")
 
 
 def parse_contract(desc_data: dict) -> dict:
@@ -30,9 +31,9 @@ def parse_contract(desc_data: dict) -> dict:
         m = LINE.match(line.strip())
         if not m:
             sys.exit(f"describe satırı ayrıştırılamadı: {line}")
-        name, typ, p, s, null = m.groups()
+        name, typ, p, s, unsigned, null = m.groups()
         spec[name] = dict(type=typ, p=int(p) if p else None, s=int(s) if s else None,
-                          nullable=(null == "nullable"))
+                          unsigned=bool(unsigned), nullable=(null == "nullable"))
     return spec
 
 
@@ -66,7 +67,9 @@ def validate(spec: dict, rows: list, shared: dict[str, list] | None):
             if t in INT_T:
                 if not isinstance(v, int) or isinstance(v, bool):
                     errs.append(f"satır {i}: {k} tam sayı değil ({v!r})")
-                elif t == "tinyint" and not -128 <= v <= 127:
+                elif c.get("unsigned") and v < 0:
+                    errs.append(f"satır {i}: {k} unsigned ama negatif ({v})")
+                elif t == "tinyint" and not (0 <= v <= 255 if c.get("unsigned") else -128 <= v <= 127):
                     errs.append(f"satır {i}: {k} tinyint aralığı dışında ({v})")
             elif t in ("decimal", "numeric", "float", "double"):
                 if not isinstance(v, (int, float)) or isinstance(v, bool):
