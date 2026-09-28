@@ -38,8 +38,12 @@ The editor applies OLD/NEW by find-and-replace inside WordPress, where the text 
 package whose OLD lines were verified "matching" still failed for the editor because of markdown:
 
 - No markdown in OLD or NEW: no `[text](url)` links (write the text, add "link on X stays" as a note),
-  no `\*` escapes, no leading `- ` on list items (say "list, one line per item" once), no `|` table
-  rows inline with `OLD:`. A table is a block: `OLD:` on its own line, then the rows; same for `NEW:`.
+  no `\*` escapes, no `|` table rows inline with `OLD:`. A table is a block: `OLD:` on its own line,
+  then the rows; same for `NEW:`.
+- Lists are real markdown lists (Berk, 2026-09-28: plain lines rendered as one paragraph). Put
+  `OLD (list, replace whole):` or `NEW (list):` on its own line, a blank line, one `- ` item per
+  line, and a blank line after the last item, so the next label does not join it. Say once in the
+  header that the `- ` is the list marker, not part of the text.
 - Chart footnotes are chart `infoText`, not post body. Mark them so the editor does not search for them.
 - Verify every OLD line against the live page before delivering, and fetch the page with a cache-buster
   (`?nocache=<epoch>`): firecrawl returned the pre-update copy for a page that had been updated an hour
