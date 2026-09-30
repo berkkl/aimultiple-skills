@@ -63,15 +63,21 @@ The following Sol command, profile, model, and troubleshooting notes apply only
 when Claude is the primary worker. Codex uses the Claude procedure above.
 
 ```bash
-codex exec --skip-git-repo-check -m gpt-5.6-sol "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
+codex exec --skip-git-repo-check -m gpt-6.1-sol -c model_reasoning_effort=xhigh "$(cat skills/aimultiple-publication-quality-gate/slop-prompt.md)
 <path/to/draft.md>" < /dev/null > /tmp/codex-out.txt 2>&1
 ```
 
-**Always pass `-m gpt-5.6-sol`.** On 2026-09-06 the account's default model had been switched
-server-side to `gpt-6-astra`, which the Mac's codex-cli 0.144.6 cannot run, so a bare
-`codex exec` failed with `400 The 'gpt-6-astra' model requires a newer version of Codex`. The
-gate is defined as a Sol read anyway; naming the model makes the run reproducible and immune
-to the default moving again.
+**Always pass `-m gpt-6.1-sol`.** Berkk moved the gate from `gpt-5.6-sol` to `gpt-6.1-sol` on
+2026-09-30. Naming the model keeps the run reproducible when the account default moves: on
+2026-09-06 the default switched server-side to `gpt-6-astra`, and a bare `codex exec` on an
+older CLI failed with `400 The 'gpt-6-astra' model requires a newer version of Codex`.
+
+**6.1 Sol needs codex-cli 0.159.2 or newer.** On 2026-09-30 the Mac's `codex` (0.156.1) failed
+with `400 The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account`,
+which reads like an account problem but is a client-version gate. Check `codex --version`
+before a gate run and upgrade if it is older. The judge install at
+`~/.local/share/judge-cli-0930/node_modules/.bin/codex` (0.159.2) runs it on the default profile
+if the PATH `codex` is behind.
 
 Let Codex READ the draft from its path rather than pasting the text in. On 2026-08-24 that is
 what let it cross-check figures against the repo's chart JSONs and findings files and catch a
