@@ -72,7 +72,7 @@ Fields:
 ## Update cadence
 
 - When work starts, set State to In Progress.
-- At the end of each session that changed a card (checkout, `/save-handoff`, "kartları güncelle"), post one comment and log one work item. Merge a second update on the same day into the first one.
+- At the end of each session that changed a card (checkout, `/save-handoff`, "kartları güncelle"), post one comment and log the engineer hours. Merge a second comment on the same day into the first one.
 - If a card stays blocked for more than 2 working days, set State to Parked. The comment says what unblocks it.
 - If an In Progress card has no comment for 3 working days, the next session names it. It asks: continue, Parked, or close.
 - The description is the spec and the comments are the log. Change the description only when the scope changes, and write what changed in a comment.
@@ -89,7 +89,7 @@ YouTrack puts a timestamp on each comment, so do not add a date line.
 
 Engineer hours are the hours a mid-level engineer needs for the same output without AI tools. They are an estimate. AI speed does not reduce the number. Actual time is not tracked.
 
-Log one work item per session update with `log_work`, for that session's output:
+At each session update, log one work item per work type with `log_work`, for that session's output:
 
 - `durationMinutes` and `date` (the session date).
 - `workType`: Development (code, harness, pipelines), Testing (benchmark runs, QA, verification), Documentation (articles, edits, charts, reports), Investigation (research, fact checks, product tests).
