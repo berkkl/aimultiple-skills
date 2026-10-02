@@ -51,7 +51,7 @@ Diğer skill'leri (fact-check, benchmark zinciri vb.) ihtiyacın oldukça aynı 
 
 ## 3. YouTrack projesi ve board
 
-Bütün ekip tek projede çalışıyor: **RES "AIMultiple Research"**. Kartlar `RES-1, RES-2...` diye gider. Board "AIMultiple Research" her ISO haftası için bir sprint tutar (`2026-W41`). Yeni kart güncel sprinte kendiliğinden düşer. Board'da her kişi ayrı satırda görünür.
+Bütün ekip tek projede çalışıyor: **RES "AIM Researcher"**. Kartlar `RES-1, RES-2...` diye gider. Board "AIM Researcher" her ISO haftası için bir sprint tutar (`2026-W41`). Yeni kart güncel sprinte kendiliğinden düşer. Board'da her kişi ayrı satırda görünür.
 
 Kendi projeni veya board'unu açma. Hesabın proje ekibinde değilse Berkk'e yaz.
 

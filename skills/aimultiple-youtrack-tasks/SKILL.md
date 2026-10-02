@@ -8,9 +8,9 @@ following this skill. They replace Claude-specific tool and session behavior.
 
 # YouTrack cards (RES)
 
-Project RES "AIMultiple Research" on aimresearcher.youtrack.cloud. Board "AIMultiple Research" has one sprint per ISO week (`2026-W41`). A new card goes into the current sprint automatically. The research team, QA, the CEO and the CMO read these cards. Write them as work documents.
+Project RES "AIM Researcher" on aimresearcher.youtrack.cloud. Board "AIM Researcher" has one sprint per ISO week (`2026-W41`). A new card goes into the current sprint automatically. The research team, QA, the CEO and the CMO read these cards. Write them as work documents.
 
-AIM is a personal archive since 2026-10-02. Do not open cards there.
+AIM (project "Berk PM") is a private project since 2026-10-02. Do not open team cards there.
 
 ## Writing protocol
 

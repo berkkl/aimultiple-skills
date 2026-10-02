@@ -23,7 +23,7 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 
 BASE = "https://aimresearcher.youtrack.cloud"
-BOARD_ID = "195-7"  # "AIMultiple Research" board, project RES
+BOARD_ID = "195-7"  # "AIM Researcher" board, project RES
 TZ = timezone(timedelta(hours=3))  # Europe/Istanbul, no DST
 
 
