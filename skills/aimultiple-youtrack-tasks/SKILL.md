@@ -75,6 +75,7 @@ Fields:
 - At the end of each session that changed a card (checkout, `/save-handoff`, "kartları güncelle"), post one comment and log the engineer hours. Merge a second comment on the same day into the first one.
 - If a card stays blocked for more than 2 working days, set State to Parked. The comment says what unblocks it.
 - If an In Progress card has no comment for 3 working days, the next session names it. It asks: continue, Parked, or close.
+- A handoff can be older than the work. Before a status comment says "draft", "not published" or "not run", check the live page, file or run folder. On 2026-10-02 a comment called a live article a draft.
 - The description is the spec and the comments are the log. Change the description only when the scope changes, and write what changed in a comment.
 
 ```
