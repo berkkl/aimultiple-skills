@@ -87,21 +87,24 @@ YouTrack puts a timestamp on each comment, so do not add a date line.
 
 ## Engineer hours
 
-Engineer hours are the hours a mid-level engineer needs for the same output without AI tools. They are an estimate. AI speed does not reduce the number. Actual time is not tracked.
+Engineer hours are the hours a mid-level engineer needs to reach the card's result without AI tools, by the most direct route. They are an estimate. AI speed does not reduce the number. Actual time is not tracked.
 
-At each session update, log one work item per work type with `log_work`, for that session's output:
+Estimate the result, not the volume of the session's output. An AI session writes notes, research reports, helper scripts and long documents that a person would not write for the same result. Do not count them. Example: a YouTrack project with a board and a sprint is 1 h of setup in the UI. The research note and the sprint script from that session add nothing.
+
+At each session update, log one work item per work type with `log_work`, for the result that the session moved:
 
 - `durationMinutes` and `date` (the session date).
-- `workType`: Development (code, harness, pipelines), Testing (benchmark runs, QA, verification), Documentation (articles, edits, charts, reports), Investigation (research, fact checks, product tests).
+- `workType`: Development (code, harness, pipelines, setup), Testing (benchmark runs, QA, verification), Documentation (articles, edits, charts, reports), Investigation (research, fact checks, product tests).
 - `description`: the basis line, for example `2 charts (3 h) + 1,200-word section (7.2 h)`.
 
 The work items add up in the card's "Engineer hours" field. Main menu > Timesheets shows the weekly total per person. YouTrack shows periods in 8-hour days: "1d 3h" is 11 hours. Say the hours in comments.
 
-Rate table v1 (2026-10-02). It is an internal calibration, not an industry standard. Review it after 4 weeks of data.
+Reference table v2 (2026-10-02). It is an internal calibration, not an industry standard. v1 counted output volume and gave 11 h for a 1 h setup. Review the table after 4 weeks of data.
 
-| Output | Engineer hours |
+| Unit the result needs | Engineer hours |
 |---|---|
-| Code kept in the repo (scripts, harness, parsers) | 1 h per 25 lines |
+| Tool or project setup in a web UI | 1 h |
+| Code the result needs (harness, parsers, pipelines) | 1 h per 25 lines |
 | Benchmark run: one model or tool over the full task set, with setup, monitoring and failure triage | 3 h |
 | Grading or output review a person would do by hand | 5 min per item |
 | New publishable article text | 6 h per 1,000 words |
@@ -110,12 +113,12 @@ Rate table v1 (2026-10-02). It is an internal calibration, not an industry stand
 | Chart: data prep, build, upload | 1.5 h |
 | Database push: record, table, feed | 2 h per table |
 | Hands-on product or vendor test with written findings | 4 h per product |
-| Report, spec or e-mail with findings | 1 h per 500 words |
+| Document someone else reads (spec, customer e-mail, team guide) | 1 h per 500 words, max 2 h |
 
-- Count the output that exists at session end: files, runs, comments, published changes.
+- Sanity check: ask how long a competent person needs for this result by the direct route. If the table gives more, log the direct estimate.
 - Do not count waiting time (runs, queues, replies).
 - Count a dead end only when the card records it as a finding.
-- If the output matches no row, use the closest row and write that in the basis line.
+- If the result matches no row, use the closest row and write that in the basis line.
 
 ## Closing a card
 
