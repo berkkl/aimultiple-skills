@@ -47,6 +47,7 @@ Source: ASD-STE100 Issue 9 (2025), applied at about 80%. Use the writing rules. 
 - Turkish: the word a person says, not a literal translation of English jargon. "klasik modellerin koşusu", not "klasik kol".
 - Multi-word nouns: max three words (2.1). Unpack longer ones.
 - Define an abbreviation at first use.
+- No "not X, but Y" framing ("X değil, Y"). State Y.
 - No marketing adjectives, hedges that carry no fact ("perhaps", "aslında", "bir nevi"), or idioms.
 
 ## Part 2: shape
@@ -84,7 +85,7 @@ python3 skills/aimultiple-internal-writing/lint_internal.py --lang tr <file>
 
 The score is rule hits per 100 words. Target: under 2.5. Fix the reported lines, run it once more, then send. The linter checks form only. It cannot tell whether the content is true or useful.
 
-English checks: sentence length, semicolons, em dashes, italic emphasis, contractions, present perfect, phrasal verbs, long words, openers and closers, hedges, vague estimates. Turkish checks: sentence length, semicolons, em dashes, italic emphasis, "-mektedir" endings, nominal "yapılması" forms, openers and closers, hedges, vague estimates. Long lists are reported but not scored.
+English checks: sentence length, semicolons, em dashes, italic emphasis, contractions, present perfect, phrasal verbs, long words, openers and closers, hedges, vague estimates. Turkish checks: sentence length, semicolons, em dashes, italic emphasis, "-mektedir" endings, nominal "yapılması" forms, openers and closers, hedges, vague estimates. Long lists and possible Turkish passive forms ("-ıldı", "-ndi", "edildi") are reported as info but not scored. For each passive hit, ask: is the actor known? If yes, write it active.
 
 ## Integration
 

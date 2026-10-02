@@ -31,6 +31,7 @@ EN = {
     "opener_closer": r"\b(?:great question|good question|let me know if|hope this helps|hope that helps|happy to (?:help|clarify)|feel free to|in summary|to summarize|to recap|in conclusion)\b",
     "hedge": r"\b(?:perhaps|arguably|presumably|it is worth noting|it should be noted|it is important to note|please note that)\b",
     "vague_estimate": r"\b(?:some work|a bit of work|a while|shortly|fairly soon|in a bit)\b",
+    "not_x_but_y": r"\bnot (?:just |only )?\w+(?: \w+){0,5}, (?:but|it's|it is)\b|\bit's not \w+(?: \w+){0,5}, it's\b",
 }
 
 TR = {
@@ -39,7 +40,15 @@ TR = {
     "opener_closer": r"(?i)\b(?:harika soru|güzel soru|umarım işine yarar|umarım yardımcı|başka bir şey olursa|yardımcı olabileceğim|özetle|kısacası|sonuç olarak)\b",
     "hedge": r"(?i)\b(?:belki de|aslında|bir nevi|bir bakıma|bir şekilde)\b",
     "vague_estimate": r"(?i)\b(?:biraz zaman|bir süre sonra|yakında|kısa sürede)\b",
+    "not_x_but_y": r"\b\w+ değil, \w+",
 }
+
+# Turkish passive: consonant stem + -ıl/-il/-ul/-ül, vowel stem + -n, and "edil-".
+# Info only: "düşündü" or "bulundu" can be false hits.
+TR_PASSIVE = re.compile(
+    r"\b(?:\w{2,}[bcçdfgğhjklmnprsştvyz](?:ıl|il|ul|ül)|\w{2,}[aeıioöuü]n|edil)"
+    r"(?:dı|di|du|dü|mış|miş|muş|müş|ıyor|iyor|uyor|üyor|ecek|acak|meli|malı)\b"
+)
 
 IMPERATIVE_EN = re.compile(r"^(?:add|apply|ask|check|close|copy|create|delete|fix|log|make|move|open|post|read|remove|rerun|run|send|set|start|update|upload|use|write)\b", re.I)
 
@@ -107,9 +116,14 @@ def lint(text: str, lang: str):
                 line = re.sub(r'"[^"\n]*"|“[^”\n]*”|\((?:not|değil)\b[^)]*\)', " ", line)
             for m in re.finditer(pat, line, flags):
                 found.append((name, no, m.group(0)))
+    info = long_lists(body)
+    if lang == "tr":
+        for no, line in enumerate(body.split("\n"), 1):
+            for m in TR_PASSIVE.finditer(line):
+                info.append((no, f"possible passive '{m.group(0)}': if the actor is known, write it active"))
     total_words = sum(words(l) for l in body.split("\n"))
     score = round(100 * len(found) / max(total_words, 1), 2)
-    return found, long_lists(body), total_words, score
+    return found, info, total_words, score
 
 
 def main() -> None:
