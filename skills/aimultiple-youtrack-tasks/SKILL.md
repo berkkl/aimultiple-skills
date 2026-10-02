@@ -109,6 +109,7 @@ Reference table v2 (2026-10-02). It is an internal calibration, not an industry 
 | Grading or output review a person would do by hand | 5 min per item |
 | New publishable article text | 6 h per 1,000 words |
 | Edit to a live article | 20 min per OLD/NEW pair |
+| Article update for a new benchmark participant: text, tables, charts | 2 h |
 | Fact check against a primary source | 30 min per claim |
 | Chart: data prep, build, upload | 1.5 h |
 | Rows into an existing database table | 10 min |
