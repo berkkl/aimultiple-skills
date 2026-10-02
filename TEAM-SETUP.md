@@ -68,7 +68,8 @@ Claude'un YouTrack'e erişimi MCP ile:
 claude mcp add --transport http youtrack https://aimresearcher.youtrack.cloud/mcp --header "Authorization: Bearer <TOKEN>"
 ```
 
-3. Test: yeni bir Claude session'ında "YouTrack'te projemdeki açık kartları listele" de. `search_issues` çalışıyorsa tamam. Çalışmıyorsa Berkk'e sor, kurulumu birlikte yaparsınız.
+3. YouTrack profilinde saat dilimini ayarla: Profil > General > Time zone: **Europe/Istanbul**. "Etc/GMT+3" seçme, o UTC-3 demek; mühendis saati kayıtları bir gün önceye kayar.
+4. Test: yeni bir Claude session'ında "YouTrack'te projemdeki açık kartları listele" de. `search_issues` çalışıyorsa tamam. Çalışmıyorsa Berkk'e sor, kurulumu birlikte yaparsınız.
 
 ## 5. Skill uyarlamaları (tek seferlik)
 
