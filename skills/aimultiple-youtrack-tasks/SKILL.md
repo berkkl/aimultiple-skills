@@ -137,6 +137,11 @@ Read the card after the state change. A state change can fail without an error.
 - Every Monday, run `python3 skills/aimultiple-youtrack-tasks/new_sprint.py`. It creates the sprint for the ISO week, moves the unresolved cards from the last sprint and makes the new sprint the default. YouTrack has no recurring sprints.
 - The MCP cannot create projects, fields, boards or sprints. Make setup changes through the REST API with the board owner's token.
 
+## Other people's cards
+
+- Change only cards where the session user is Assignee or Reporter. Leave other cards as they are, unless their owner asks.
+- Read the card's history before you write a field. If a person set a value by hand (Estimation, a work item, State, Priority), keep it. On 2026-10-02 a session overwrote a hand-set Estimation.
+
 ## Failure cases
 
 - If a card is not on the board, set its sprint in the card's Board field in the UI. The MCP cannot set sprints.
