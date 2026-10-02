@@ -18,7 +18,7 @@ Bu kurulum sana zip olarak geldiyse: zip'teki `skills/` klasörünü `~/aimultip
 
 ## 2. CLAUDE.md
 
-`~/aimultiple-work/CLAUDE.md` dosyasını oluştur, şablon (KENDİ proje kodunu yaz, aşağıda `XXX` gördüğün her yer):
+`~/aimultiple-work/CLAUDE.md` dosyasını oluştur, şablon:
 
 ```markdown
 # AIMultiple Çalışma Alanı
@@ -37,7 +37,6 @@ satıra bağlıysa skills/aimultiple-session-pm/SKILL.md checkin prosedürünü 
 (hangi kart, haftalık sayaç, duran işler, tek cümle öneri; 10 satırı geçme).
 Session sonunda dokunulan satırları checkout ile güncelle. Plan dosyası yoksa
 bunu tek satırla söyle, sessizce atlama.
-NOT: Skill'deki YouTrack sorgularında proje kodu olarak XXX kullan (AIM değil).
 Skill'deki INBOX/Gelen İşler bölümü Berkk'in intake sistemine özel, ATLA.
 
 ## Skill yönlendirmesi
@@ -52,11 +51,11 @@ Diğer skill'leri (fact-check, benchmark zinciri vb.) ihtiyacın oldukça aynı 
 
 ## 3. YouTrack projesi ve board
 
-Ortak instance kullanıyoruz ama herkes kendi projesinde çalışıyor:
+Bütün ekip tek projede çalışıyor: **RES "AIMultiple Research"**. Kartlar `RES-1, RES-2...` diye gider. Board "AIMultiple Research" her ISO haftası için bir sprint tutar (`2026-W41`). Yeni kart güncel sprinte kendiliğinden düşer. Board'da her kişi ayrı satırda görünür.
 
-1. Berkk'ten kendi projeni iste (proje kodu = baş harflerin, ör. `SVL`). Kartların `SVL-1, SVL-2...` diye gider; Berkk'in AIM kartlarıyla karışmaz ama gerektiğinde birbirimizin kartına link verebiliriz.
-2. Kendi agile board'unu aç: Agile Boards -> New board, projen seçili.
-3. Board ayarında otomatik ekleme aç: Board Settings -> General -> Sprints altında "Automatically add new issues" seçeneğini işaretle (ya da sprint kullanmayacaksan sprint'leri kapat; sprint'siz board query eşleşmesiyle her kartı kendiliğinden gösterir). Bunu yapmazsan her kartı elle board'a taşımak zorunda kalırsın.
+Kendi projeni veya board'unu açma. Hesabın proje ekibinde değilse Berkk'e yaz.
+
+Kart yazım kuralı, güncelleme sıklığı ve mühendis saati: `skills/aimultiple-youtrack-tasks/SKILL.md`. Kartlarda kişi adı, mention veya sohbet alıntısı yer almaz.
 
 ## 4. YouTrack MCP
 
@@ -73,25 +72,21 @@ claude mcp add --transport http youtrack https://aimresearcher.youtrack.cloud/mc
 
 ## 5. Skill uyarlamaları (tek seferlik)
 
-Kendi kopyanda (`~/aimultiple-work/skills/`) iki küçük değişiklik:
-
-1. `aimultiple-session-pm/SKILL.md`: sorgulardaki `project: AIM` ifadelerini kendi proje kodunla değiştir; "Gelen kutusu" (INBOX) adımını ve "Triaging an INBOX card" bölümünü sil (Berkk'in form intake'i, sende yok).
-2. `aimultiple-youtrack-tasks/SKILL.md`: varsa AIM proje referanslarını kendi kodunla değiştir.
-
-Claude'a "bu iki dosyada AIM'i XXX yap, INBOX bölümlerini çıkar" demen yeterli.
+Proje kodu herkes için RES, değiştirme. Tek uyarlama: `aimultiple-session-pm/SKILL.md` içindeki "Gelen kutusu" (INBOX) adımını ve "Triaging an INBOX card" bölümünü sil. Bu bölüm Berkk'in form intake'ine özel. Pazartesi sprint adımı (`new_sprint.py`) da board sahibine özel, sende atlanır.
 
 ## 6. Doğrulama
 
 Sırayla test et, üçü de geçmeden kuruluma bitti deme:
 
 1. **Handoff:** Claude'a küçük bir iş yaptır, `/save-handoff deneme` de; `handoffs/deneme.md` oluşmalı. Yeni session aç, `/load-handoff deneme` ile kaldığın yerden devam edebilmeli.
-2. **YouTrack:** Claude'a "kendime deneme kartı aç" de; kartın board'da otomatik göründüğünü kontrol et, sonra kartı kapattır.
+2. **YouTrack:** Claude'a RES'te kendine bir iş kartı açtır (gerçek bir iş seç, deneme kartı açma). Kart güncel sprintte, senin satırında görünmeli. Session sonunda kartta bir güncelleme yorumu ve bir mühendis saati kaydı olmalı.
 3. **PM:** `weekly-plan/` altına Claude'la birlikte bu haftanın dosyasını kur (skill'deki tablo formatı: iş | kart | hedef gün | durum | kalan). Yeni session aç; Claude checkin çıktısıyla açılmalı: hangi karta çalışıyorsun, haftada kaç iş bitti, ne duruyor.
 
 ## 7. Çalışma düzeni
 
 - Hafta başı: haftalık iş listeni weekly-plan dosyasına döktür, her satırı bir karta bağla.
-- Her session: checkin ile başla, checkout ile bitir; kart yorumu formatı "Yapılan / Sıradaki / Blocker".
+- Her session: checkin ile başla, checkout ile bitir. Checkout kart yorumunu (Yapılan / Sıradaki / Engel) ve mühendis saati kaydını yazar.
+- Kart kapanınca kapanış yorumu toplam mühendis saatini ve kanıt linkini verir.
 - Uzun projelerde context %50'yi geçmeden handoff yaz; devam eden işin hafızası handoff dosyasıdır, chat geçmişi değil.
 - Cuma: haftalık özetini weekly-plan dosyasından ürettir (düz bullet, tek satır, birinci tekil).
 

@@ -18,28 +18,28 @@ Single source: `weekly-plan/<YYYY-Www>.md` (current ISO week; `date +%Y-W%V`). R
 ## checkin (default)
 
 1. Read the current week's plan file. Missing → say so, offer to create it from the user's list. Do not invent rows.
-2. One YouTrack query: `project: AIM #Unresolved for: me sort by: updated desc` (limit 20). Cross-check the states of the cards named in the plan. File and YouTrack disagree → report the disagreement, do not silently pick one.
-3. Gelen kutusu: `project: INBOX #Unresolved sort by: created desc`. These are requests submitted through berkkalelioglu.com/aim-pm and never triaged. Each one is unfinished business: it has no AIM card, no plan row, and nobody has decided whether it is work. Name every one of them in the checkin and say what it needs. Empty result → say nothing about it.
+2. One YouTrack query: `project: RES #Unresolved for: me sort by: updated desc` (limit 20). On Monday the board owner first runs `python3 skills/aimultiple-youtrack-tasks/new_sprint.py` (creates the week's sprint, carries over unresolved cards). Cross-check the states of the cards named in the plan. File and YouTrack disagree → report the disagreement, do not silently pick one.
+3. Gelen kutusu: `project: INBOX #Unresolved sort by: created desc`. These are requests submitted through berkkalelioglu.com/aim-pm and never triaged. Each one is unfinished business: it has no RES card, no plan row, and nobody has decided whether it is work. Name every one of them in the checkin and say what it needs. Empty result → say nothing about it.
 4. Output, 10 lines max plus one line per untriaged INBOX card, no essay:
-   - This session maps to row N / card AIM-XX (unclear → ask in one line).
+   - This session maps to row N / card RES-XX (unclear → ask in one line).
    - Weekly counter: X done / Y in-progress / Z not-started (of M).
    - Nudges: every row past its hedef gün or unchanged 2+ days, by name ("6 numara iki gündür kımıldamıyor").
-   - Untriaged incoming work: `INBOX-x, kimden, tek cümle özet -> incele ve AIM kartını aç`. Do not open the card yourself in this step; say it needs opening and let the user decide when.
+   - Untriaged incoming work: `INBOX-x, kimden, tek cümle özet -> incele ve RES kartını aç`. Do not open the card yourself in this step; say it needs opening and let the user decide when.
    - One-sentence recommendation: what this session should produce for its row to move.
 
 ## Triaging an INBOX card
 
 Requests arrive from the /aim-pm form as `INBOX-x` cards in the "Gelen İşler" project, assigned to Berk. They are raw: the description holds the sender, urgency, deadline, link, and the pasted message, nothing more. Triage means deciding what the work is, not copying the request.
 
-1. Read the INBOX card. Decide with the user: real work, already covered by an existing AIM card, or not work at all.
-2. Real work → open the AIM card per `skills/aimultiple-youtrack-tasks/SKILL.md` (full description format, subsystem, priority), then add a plan row if it belongs to this week.
+1. Read the INBOX card. Decide with the user: real work, already covered by an existing RES card, or not work at all.
+2. Real work → open the RES card per `skills/aimultiple-youtrack-tasks/SKILL.md` (full description format, subsystem, priority), then add a plan row if it belongs to this week.
 3. Mark it handled on https://berkkalelioglu.com/aim-pm (the "işlendi" button takes the AIM id), which closes the INBOX card with a comment. Not work → "sil" there instead; the card is closed, not deleted.
 4. Never leave an INBOX card open after deciding. An open INBOX card means undecided, and every checkin will name it again.
 
 ## checkout (session end, or on request)
 
 1. Update the touched rows: Durum, Kalan, date in parentheses. A row moves only on concrete evidence (file written, run finished, live check, card comment). No evidence, no move.
-2. Post the durum comment to the card (existing convention: Yapılan / Sıradaki / Blocker). Row fully done → mark done in the file and move the card state with user confirmation.
+2. Post the card update and log the session's engineer hours (`aimultiple-youtrack-tasks`, Update cadence and Engineer hours). Row fully done → mark done in the file and move the card state with user confirmation.
 2b. **Benchmark rows carry a DB gate.** If the row is a benchmark that produced `output/db-ready.csv` (or published its results), it cannot be marked done until the Houston record exists, the table exists, and the rows are fed (`skills/aimultiple-benchmark-centralization/SKILL.md`, Procedure 5-6). Otherwise write "DB push bekliyor: kayıt/tablo/feed" into Kalan and remind Berkk to open the record and table; the next checkin repeats the reminder until the push lands.
 3. **Push the plan to the board.** `cd ~/Projects/berkkalelioglu.com && npm run pm:push` (add a week label to push another week; `--dry` to check parsing first). berkkalelioglu.com/aim-pm renders a KV copy of the plan, not the file, and the plan is the whitelist: YouTrack is queried only for the cards the plan names, so a row that was never pushed is invisible there and its card shows only inside the "open cards not in the plan" count. Editing the markdown alone changes nothing on the site. On 2026-08-25 a new row (AIM-78) was written to the file and not pushed, and Berkk found it missing from the board.
 4. Friday checkout → offer to generate the Cem weekly from this file (aimultiple-cem-report summary format, flat bullets).

@@ -133,11 +133,11 @@ Files to read before starting work. Commands to run. Background knowledge the mo
 
 ### Step 6: YouTrack sync (added 2026-08-02)
 
-If the handoff document names a YouTrack issue or epic (an `AIM-xx` reference anywhere in it), post the session's progress to YouTrack per `skills/aimultiple-youtrack-tasks/SKILL.md` before telling the user:
+If the handoff document names a YouTrack issue or epic (a `RES-xx` reference anywhere in it; `AIM-xx` is the archive, skip it), post the session's progress to YouTrack per `skills/aimultiple-youtrack-tasks/SKILL.md` before telling the user:
 
-- One `add_issue_comment` on the named epic in the standard durum format (date, Yapılan, Sıradaki, Blocker). One comment per session; if this session already posted one and nothing material changed since, skip.
+- One `add_issue_comment` on the named epic in the update format of that skill, plus the session's engineer-hours work item. One comment per session; if this session already posted one and nothing material changed since, skip.
 - Update subtask States that the session's work visibly changed (started -> In Progress, finished -> Done). Do not touch unrelated subtasks.
-- If the handoff names no `AIM-xx`, skip silently. Do not create issues from this step; creation stays an explicit ask.
+- If the handoff names no `RES-xx`, skip silently. Do not create issues from this step; creation stays an explicit ask.
 
 ### Step 6b: Intake check (added 2026-08-24)
 

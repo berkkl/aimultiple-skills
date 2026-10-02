@@ -1,68 +1,148 @@
 ---
 name: aimultiple-youtrack-tasks
-description: Opens and updates YouTrack (AIM project) tasks from any chat via the YouTrack MCP. Use when the user says "youtrack'e aç", "task aç", "youtrack güncelle", "durum güncelle", references an AIM-xx issue, or forwards a Cem/Sedat message that should become tracked work.
+description: Opens, updates and closes cards in the team's YouTrack project RES through the YouTrack MCP, with the card writing protocol (ASD-STE100-based, no personal names), the update cadence and engineer-hour logging. Use when the user says "kart aç", "task aç", "youtrack", "durum güncelle", "kartı kapat", "kartları güncelle", references a RES-xx card, or brings a request that should become tracked work.
 ---
 
 Codex: read [the runtime adaptations](../../codex-migration/RUNTIME.md) before
 following this skill. They replace Claude-specific tool and session behavior.
 
-# YouTrack Task Workflow
+# YouTrack cards (RES)
 
-Two projects. AIM is where work lives; board "AIM Researcher" (manual-add, see Failure Cases). INBOX ("Gelen İşler") is an intake queue, not a work board: cards land there automatically from the berkkalelioglu.com/aim-pm form and wait to be triaged into AIM. Never plan, estimate, or comment progress on an INBOX card.
+Project RES "AIMultiple Research" on aimresearcher.youtrack.cloud. Board "AIMultiple Research" has one sprint per ISO week (`2026-W41`). A new card goes into the current sprint automatically. The research team, QA, the CEO and the CMO read these cards. Write them as work documents.
 
-Every task is assigned to berk.kalelioglu unless the user says otherwise.
+AIM is a personal archive since 2026-10-02. Do not open cards there.
 
-## Before any task work: check the intake
+## Writing protocol
 
-Run `project: INBOX #Unresolved` at the start of any session that touches YouTrack. Each open card is a request nobody has decided on yet. Name them and ask whether to open the AIM cards; do not convert silently, and do not skip the check because the session came in for something else. Triage procedure lives in `skills/aimultiple-session-pm/SKILL.md`.
+Use Turkish or English, one language per card. The rules are the same in both. They follow ASD-STE100 (Issue 9, 2025) at about 80%: apply the writing rules, skip the approved-word dictionary.
 
-Converting one: read the INBOX description (sender, urgency, deadline, link, pasted message), write the AIM card in the format below with the pasted message as the source quote, then close the INBOX card from https://berkkalelioglu.com/aim-pm with the "işlendi" button so the AIM id is recorded on it.
+- One instruction per sentence, in the imperative: "Add the agents to the runner."
+- Instructions have max 20 words. Description sentences have max 25 words. Paragraphs have max 6 sentences.
+- Use the active voice. Use the passive only when the actor is unknown.
+- Use one term for one thing. Use the name the repo uses for a benchmark, tool or model.
+- Put the condition first: "If the run fails, rerun the cell once."
+- Give numbers with units. Give dates as absolute dates (2026-10-05).
+- Do not add filler, hedges or idioms.
 
-## Task creation format
+**No people in the text.** People go in the fields (Reporter, Assignee). Summary, description and comments contain:
 
-Summary: imperative, specific, Turkish. Include deadline in the summary only if one exists (absolute date, e.g. "hedef yayın 2026-07-10 Cuma").
+- no names, no @mentions, no "X said", "X wants" or "send this to X";
+- no chat or e-mail quotes. Link the source document, or state the fact;
+- decisions as decisions: "Scores use a 0-100 scale.";
+- dependencies as a linked card ("depends on RES-12") or a role ("waiting for: customer reply", "waiting for: management approval").
 
-Description sections, in order:
+Exception: a card opened for another person starts with one line, `Requested by: <name>`.
 
-1. `## Ne isteniyor` - what is being asked, decided points, deadline as absolute date.
-2. `## Nasıl yapacağız` - numbered concrete steps. Flag methodology risks (fairness, fake-win, known data weaknesses) here, not as filler.
-3. `## Açık sorular` - only if real ones exist. Each must name who resolves it.
-4. Source: if the work came from a formal work message (Cem, Sedat, customer), quote the full message verbatim under `## <Kişi>'nin mesajı (tam metin)`. If it came from a handoff or doc, link the path instead. Informal or private colleague chatter (WhatsApp, DMs, venting, opinions about people) is NEVER pasted verbatim: summarize the work-relevant facts in one neutral sentence. Issues are a shared record; write everything at work-document seriousness.
+| Before | After |
+|---|---|
+| agentic-cli: Vedat'ın istediği yeni agent'ları ekle. Vedat yazdı, Berkk pipeline'a aldı; hangi agent'lar olduğu mesajdan okunacak. | **Agentic-CLI benchmark'ına yeni agent'ları ekle** / Requested by: Vedat / Amaç: Benchmark üç yeni agent'ı ölçer. |
+| Cem 16 Eylül'de yayını durdurdu, önce mevcut yazılar düzelsin dedi. | Yayın, mevcut yazılar standarda uyana kadar durdu (2026-09-16). |
 
-Custom fields:
+## Card format
 
-- Assignee: berk.kalelioglu
-- State: To do
-- Type: Task by default. Epic + subtasks when the work has 3+ separable parts with their own progress (subtasks reference the epic for the full source message instead of repeating it).
-- Subsystem: Benchmarks (benchmark run/methodology/centralization), Articles (article edits, charts into articles), Custom Tasks (internal tooling, bots, scripts).
-- Priority: Urgent (Cem says top priority/urgent), Major (has a deadline or customer impact), Normal (everything else).
-
-When creating an epic, create the epic first, then subtasks with `parentIssue`, then update the epic description with the real subtask IDs. Do not guess IDs in advance.
-
-## Status updates while working
-
-When work on an issue starts, set State: In Progress. When it finishes, Done. When blocked long-term, Parked.
-
-Progress is recorded with `add_issue_comment`, one comment per session or milestone, format:
+Summary: one imperative sentence of max 10 words that names the object (benchmark or article slug). A deadline goes in Due Date, not the summary.
 
 ```
-2026-07-06 durum
-- Yapılan: <1-3 bullets, concrete artifacts/numbers>
-- Sıradaki: <next step>
-- Blocker: <who/what, or "yok">
+Requested by: <name>          (only for a card opened for another person)
+
+## Goal | Amaç
+<1-2 sentences: what is different when the card is done>
+
+## Steps | Adımlar
+1. <one instruction>
+
+## Done when | Bitti sayılır
+- <verifiable result: live URL, file path, DB table id, run folder>
+
+## Links | Bağlantılar
+- <spec, handoff, doc, article URL>
 ```
 
-Do not edit the description for status; the description is the spec, comments are the log. Update the description only when scope or decisions change, and say what changed in a comment.
+Write a methodology risk (fairness, fake win, known data weakness) as its own step. Add `## Open questions | Açık sorular` only for real questions, and give the role that answers each one.
+
+Fields:
+
+- Type: Task by default. Use Epic when the work has 3+ parts with separate progress. Create the epic, then the subtasks with `parentIssue`, then write the real subtask IDs into the epic. Other types: Article Edit, New Article, Bug.
+- Priority: Urgent (management top priority, customer blocker), Major (deadline or customer impact), Normal (default).
+- Subsystem: Benchmarks, Articles, Customer, Tooling.
+- Assignee: the person who does the work, by default the session user. State: To do.
+- Estimation: engineer hours for the full card, from the table below, when the scope is clear.
+- Due Date: only for a real deadline.
+
+## Update cadence
+
+- When work starts, set State to In Progress.
+- At the end of each session that changed a card (checkout, `/save-handoff`, "kartları güncelle"), post one comment and log one work item. Merge a second update on the same day into the first one.
+- If a card stays blocked for more than 2 working days, set State to Parked. The comment says what unblocks it.
+- If an In Progress card has no comment for 3 working days, the next session names it. It asks: continue, Parked, or close.
+- The description is the spec and the comments are the log. Change the description only when the scope changes, and write what changed in a comment.
+
+```
+Done: <1-3 items, concrete artifact or number>      | Yapılan:
+Next: <one step>                                    | Sıradaki:
+Blocked: <RES-xx or role, or "none">                | Engel:
+```
+
+YouTrack puts a timestamp on each comment, so do not add a date line.
+
+## Engineer hours
+
+Engineer hours are the hours a mid-level engineer needs for the same output without AI tools. They are an estimate. AI speed does not reduce the number. Actual time is not tracked.
+
+Log one work item per session update with `log_work`, for that session's output:
+
+- `durationMinutes` and `date` (the session date).
+- `workType`: Development (code, harness, pipelines), Testing (benchmark runs, QA, verification), Documentation (articles, edits, charts, reports), Investigation (research, fact checks, product tests).
+- `description`: the basis line, for example `2 charts (3 h) + 1,200-word section (7.2 h)`.
+
+The work items add up in the card's "Engineer hours" field. Main menu > Timesheets shows the weekly total per person.
+
+Rate table v1 (2026-10-02). It is an internal calibration, not an industry standard. Review it after 4 weeks of data.
+
+| Output | Engineer hours |
+|---|---|
+| Code kept in the repo (scripts, harness, parsers) | 1 h per 25 lines |
+| Benchmark run: one model or tool over the full task set, with setup, monitoring and failure triage | 3 h |
+| Grading or output review a person would do by hand | 5 min per item |
+| New publishable article text | 6 h per 1,000 words |
+| Edit to a live article | 20 min per OLD/NEW pair |
+| Fact check against a primary source | 30 min per claim |
+| Chart: data prep, build, upload | 1.5 h |
+| Database push: record, table, feed | 2 h per table |
+| Hands-on product or vendor test with written findings | 4 h per product |
+| Report, spec or e-mail with findings | 1 h per 500 words |
+
+- Count the output that exists at session end: files, runs, comments, published changes.
+- Do not count waiting time (runs, queues, replies).
+- Count a dead end only when the card records it as a finding.
+- If the output matches no row, use the closest row and write that in the basis line.
+
+## Closing a card
+
+Set Done only when each "Done when" item has evidence. If the logged total misses work, log one more work item for the gap. Then post:
+
+```
+Result: <what is live, and where>
+Engineer hours: <field total> (<n> work items)
+Evidence: <URL or path>
+```
+
+Read the card after the state change. A state change can fail without an error.
+
+## Board owner tasks
+
+- Every Monday, run `python3 skills/aimultiple-youtrack-tasks/new_sprint.py`. It creates the sprint for the ISO week, moves the unresolved cards from the last sprint and makes the new sprint the default. YouTrack has no recurring sprints.
+- The MCP cannot create projects, fields, boards or sprints. Make setup changes through the REST API with the board owner's token.
 
 ## Failure cases
 
-- Board membership is NOT settable via MCP ("Issue field 'Board ...' not found"). After creating issues, remind the user once: select them in the Issues list and apply command `add Board AIM Researcher`, or enable auto-add in board settings.
-- If a required input is unrecoverable (which message, which scope), ask. Do not ask for values with an obvious default (State, Assignee, Type).
-- If the user forwards multiple messages, one task per independent piece of work; do not merge unrelated asks into one issue.
+- If a card is not on the board, set its sprint in the card's Board field in the UI. The MCP cannot set sprints.
+- If a required input cannot be recovered (which request, which scope), ask. Do not ask about values with a clear default.
+- Open one card per independent piece of work.
 
 ## Integration
 
-- Benchmark tasks follow `aimultiple-benchmark-methodology-design` constraints; put the fairness/fake-win note in the description at creation time.
-- Session-end journaling stays in `aimultiple-cem-report`; YouTrack comments do not replace the daily log.
-- Intake and weekly plan: `aimultiple-session-pm`. An INBOX card that became an AIM card should also get a plan row if the work belongs to the current week.
-- `/save-handoff` triggers a YouTrack sync automatically (2026-08-02): when the handoff names an `AIM-xx`, the save posts the session durum comment and refreshes changed subtask States. See Step 6 in `aimultiple-context-handoff/SKILL.md`. Handoff documents for tracked work streams should therefore always name their epic.
+- `aimultiple-session-pm`: checkin reads RES. Checkout runs the update cadence above.
+- `/save-handoff` Step 6 posts the update to the RES card that the handoff names.
+- Benchmark cards: the fairness note from `aimultiple-benchmark-methodology-design` goes in Steps at creation.
+- Intake form (berkkalelioglu.com/aim-pm → INBOX): triage per `aimultiple-session-pm`. A request that is real work becomes a RES card.
