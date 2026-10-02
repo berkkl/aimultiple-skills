@@ -137,6 +137,7 @@ If the handoff document names a YouTrack issue or epic (a `RES-xx` reference any
 
 - One `add_issue_comment` on the named epic in the update format of that skill, plus the session's engineer-hours work item. One comment per session; if this session already posted one and nothing material changed since, skip.
 - Update subtask States that the session's work visibly changed (started -> In Progress, finished -> Done). Do not touch unrelated subtasks.
+- A handoff for tracked work names its RES card in the header (`YouTrack: RES-xx`). If it names only `AIM-xx`, ask the user once which RES card it maps to and write that line in.
 - If the handoff names no `RES-xx`, skip silently. Do not create issues from this step; creation stays an explicit ask.
 
 ### Step 6b: Intake check (added 2026-08-24)
