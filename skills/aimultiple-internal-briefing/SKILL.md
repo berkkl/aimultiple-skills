@@ -55,6 +55,8 @@ End with a one-line summary of confidence level and any recommended next step.
 
 ## Integration Points
 
+- Sentence and message-shape rules: `aimultiple-internal-writing`.
+
 - Uses `aimultiple-source-validation` for evidence grading.
 - If the answer later gets promoted to an article, hand off to `aimultiple-anti-slop-writing` and `aimultiple-fact-check-workflow`.
 - Does NOT require `aimultiple-publication-quality-gate` (internal only).

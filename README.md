@@ -17,7 +17,7 @@ Paths inside some skills assume Berkk's workspace layout (`AIM Articles/...`). A
 | Research | `aimultiple-topic-research`, `aimultiple-market-landscape`, `aimultiple-internal-briefing` |
 | Benchmarks | `aimultiple-benchmark-methodology-design`, `aimultiple-benchmark-spec-template`, `aimultiple-benchmark-preflight-check`, `aimultiple-benchmark-centralization`, `aimultiple-benchmark-database` (includes `repo-template/` and the `upload_to_db.py` client), `aimultiple-python-research-standards` |
 | Deliverables | `aimultiple-deliverable-xlsx` |
-| Ops | `aimultiple-youtrack-tasks` |
+| Ops | `aimultiple-youtrack-tasks`, `aimultiple-internal-writing` (ASD-STE100 rules for cards, messages, internal reports; never for articles) |
 | Handoffs | `aimultiple-context-handoff` (the procedure), `save-handoff`, `load-handoff`, `list-handoffs` (slash commands). Lets a long project survive across sessions: write a named handoff, clear, resume from it. |
 
 ## Rules of the road

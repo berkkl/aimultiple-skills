@@ -14,22 +14,17 @@ AIM (project "Berk PM") is a private project since 2026-10-02. Do not open team 
 
 ## Writing protocol
 
-Use Turkish or English, one language per card. The rules are the same in both. They follow ASD-STE100 (Issue 9, 2025) at about 80%: apply the writing rules, skip the approved-word dictionary.
+Use Turkish or English, one language per card. Card text follows `aimultiple-internal-writing` (ASD-STE100 rules at about 80%, both parts). Check a long description or comment with its `lint_internal.py` before you post it. Card-specific rules:
 
-- One instruction per sentence, in the imperative: "Add the agents to the runner."
-- Instructions have max 20 words. Description sentences have max 25 words. Paragraphs have max 6 sentences.
-- Use the active voice. Use the passive only when the actor is unknown.
-- Use one term for one thing. Use the name the repo uses for a benchmark, tool or model.
-- Put the condition first: "If the run fails, rerun the cell once."
+- Use the name the repo uses for a benchmark, tool or model.
 - Give numbers with units. Give dates as absolute dates (2026-10-05).
-- Do not add filler, hedges or idioms.
 
 **No people in the text.** People go in the fields (Reporter, Assignee). Summary, description and comments contain:
 
-- no names, no @mentions, no "X said", "X wants" or "send this to X";
-- no chat or e-mail quotes. Link the source document, or state the fact;
-- decisions as decisions: "Scores use a 0-100 scale.";
-- dependencies as a linked card ("depends on RES-12") or a role ("waiting for: customer reply", "waiting for: management approval").
+- No names, no @mentions, no "X said", "X wants" or "send this to X".
+- No chat or e-mail quotes. Link the source document, or state the fact.
+- Decisions as decisions: "Scores use a 0-100 scale."
+- Dependencies as a linked card ("depends on RES-12") or a role ("waiting for: customer reply", "waiting for: management approval").
 
 Exception: a card opened for another person starts with one line, `Requested by: <name>`.
 
