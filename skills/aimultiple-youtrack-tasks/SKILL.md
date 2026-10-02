@@ -111,7 +111,7 @@ Reference table v2 (2026-10-02). It is an internal calibration, not an industry 
 | Edit to a live article | 20 min per OLD/NEW pair |
 | Fact check against a primary source | 30 min per claim |
 | Chart: data prep, build, upload | 1.5 h |
-| Database push: record, table, feed | 2 h per table |
+| Rows into an existing database table | 10 min |
 | Hands-on product or vendor test with written findings | 4 h per product |
 | Document someone else reads (spec, customer e-mail, team guide) | 1 h per 500 words, max 2 h |
 
