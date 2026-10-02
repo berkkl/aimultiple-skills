@@ -95,7 +95,7 @@ At each session update, log one work item per work type with `log_work`, for tha
 - `workType`: Development (code, harness, pipelines), Testing (benchmark runs, QA, verification), Documentation (articles, edits, charts, reports), Investigation (research, fact checks, product tests).
 - `description`: the basis line, for example `2 charts (3 h) + 1,200-word section (7.2 h)`.
 
-The work items add up in the card's "Engineer hours" field. Main menu > Timesheets shows the weekly total per person.
+The work items add up in the card's "Engineer hours" field. Main menu > Timesheets shows the weekly total per person. YouTrack shows periods in 8-hour days: "1d 3h" is 11 hours. Say the hours in comments.
 
 Rate table v1 (2026-10-02). It is an internal calibration, not an industry standard. Review it after 4 weeks of data.
 
