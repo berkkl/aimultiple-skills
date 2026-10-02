@@ -51,7 +51,7 @@ Requested by: <name>          (only for a card opened for another person)
 ## Steps | Adımlar
 1. <one instruction>
 
-## Done when | Bitti sayılır
+## Done when | Bitme koşulları
 - <verifiable result: live URL, file path, DB table id, run folder>
 
 ## Links | Bağlantılar
