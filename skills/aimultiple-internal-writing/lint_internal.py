@@ -50,6 +50,11 @@ TR_PASSIVE = re.compile(
     r"(?:dı|di|du|dü|mış|miş|muş|müş|ıyor|iyor|uyor|üyor|ecek|acak|meli|malı)\b"
 )
 
+# Turkish sentence that opens an inline list with a colon: 3+ words before ": ",
+# 3+ comma-separated items after it. Nobody writes Turkish mail like this.
+# "Bütçe: ..." label lines have a short prefix and do not match.
+TR_COLON_LIST = re.compile(r"^(?:\S+\s+){2,}\S+:\s+[^:]+,[^:]+,[^:]+$")
+
 IMPERATIVE_EN = re.compile(r"^(?:add|apply|ask|check|close|copy|create|delete|fix|log|make|move|open|post|read|remove|rerun|run|send|set|start|update|upload|use|write)\b", re.I)
 
 
@@ -105,6 +110,8 @@ def lint(text: str, lang: str):
         cap = MAX_INSTRUCTION if (is_item or (lang == "en" and IMPERATIVE_EN.match(s))) else MAX_SENTENCE
         if n > cap:
             found.append(("long_sentence", no, f"{n} words > {cap}: {s[:70]}"))
+        if lang == "tr" and TR_COLON_LIST.match(s):
+            found.append(("colon_list", no, f"list after a colon inside a sentence: {s[:70]}"))
     rules = dict(COMMON, **(EN if lang == "en" else TR))
     flags = 0 if lang == "tr" else re.I
     for name, pat in rules.items():

@@ -50,6 +50,15 @@ Source: ASD-STE100 Issue 9 (2025), applied at about 80%. Use the writing rules. 
 - No "not X, but Y" framing ("X değil, Y"). State Y.
 - No marketing adjectives, hedges that carry no fact ("perhaps", "aslında", "bir nevi"), or idioms.
 
+**Turkish: write it the way a person writes a mail** (Berkk, 2026-10-06)
+- Do not open a list with a colon inside a sentence ("... ölçer: a, b, c, d"). Nobody writes Turkish mail like this. Say what happens in one sentence, then give the items in a second sentence.
+- In a message (Slack, e-mail, chat reply), speak as the team: "yürüteceğiz", "bakacağız", "öneriyorum". Do not write a definition about the work in the third person ("Benchmark, ... yürütmesini ölçer").
+- Prefer verbs to long noun chains. "5 ürüne 4 iş verip yürüteceğiz", not "beş ürünün 4 işi yürütmesini".
+
+| Before | After |
+|---|---|
+| Benchmark, beş ürünün aynı 4 AIMultiple işini 10 iş günü gözetimsiz yürütmesini ölçer: vendor inbox, yeni sayfa denetimi, rakip takibi, bizi yanlış alıntılayan siteler. | Bu benchmarkta 5 ürüne 4 farklı iş verip 10 gün boyunca gözetimsiz şekilde yürüteceğiz. Bakacağımız şeyler vendor inbox, yeni sayfa denetimi, rakip takibi ve bizi yanlış alıntılayan siteler olacak, detayları spec'te var. |
+
 ## Part 2: shape
 
 The reader reads the message on a screen and acts on it. Anything below the first screen may be lost.
@@ -85,7 +94,7 @@ python3 skills/aimultiple-internal-writing/lint_internal.py --lang tr <file>
 
 The score is rule hits per 100 words. Target: under 2.5. Fix the reported lines, run it once more, then send. The linter checks form only. It cannot tell whether the content is true or useful.
 
-English checks: sentence length, semicolons, em dashes, italic emphasis, contractions, present perfect, phrasal verbs, long words, openers and closers, hedges, vague estimates. Turkish checks: sentence length, semicolons, em dashes, italic emphasis, "-mektedir" endings, nominal "yapılması" forms, openers and closers, hedges, vague estimates. Long lists and possible Turkish passive forms ("-ıldı", "-ndi", "edildi") are reported as info but not scored. For each passive hit, ask: is the actor known? If yes, write it active.
+English checks: sentence length, semicolons, em dashes, italic emphasis, contractions, present perfect, phrasal verbs, long words, openers and closers, hedges, vague estimates. Turkish checks: sentence length, semicolons, em dashes, italic emphasis, "-mektedir" endings, nominal "yapılması" forms, a list opened with a colon inside a sentence (`colon_list`), openers and closers, hedges, vague estimates. Long lists and possible Turkish passive forms ("-ıldı", "-ndi", "edildi") are reported as info but not scored. For each passive hit, ask: is the actor known? If yes, write it active.
 
 ## Integration
 
