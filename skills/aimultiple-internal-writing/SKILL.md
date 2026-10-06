@@ -59,6 +59,21 @@ Source: ASD-STE100 Issue 9 (2025), applied at about 80%. Use the writing rules. 
 |---|---|
 | Benchmark, beş ürünün aynı 4 AIMultiple işini 10 iş günü gözetimsiz yürütmesini ölçer: vendor inbox, yeni sayfa denetimi, rakip takibi, bizi yanlış alıntılayan siteler. | Bu benchmarkta 5 ürüne 4 farklı iş verip 10 gün boyunca gözetimsiz şekilde yürüteceğiz. Bakacağımız şeyler vendor inbox, yeni sayfa denetimi, rakip takibi ve bizi yanlış alıntılayan siteler olacak, detayları spec'te var. |
 
+**Reference message.** Berkk wrote this to management on 2026-10-06 and set it as the base for internal Turkish messages. Start a Slack message or e-mail from its shape:
+
+> Selam @..., Bi spec hazırladım, hem benchmarkı anlatıyor, hem de tasarlanan taskler içerisinde var, özet olarak 4 task var
+> Agent belli bir saatte gelen vendor epostalarını koyduğumuz kurallara göre okuyor, eski yazışmalara bakıp her birine cevap taslağı yazıyor
+> (... one line per task ...)
+> Agent her gün Artificial Analysis, Vals vs. benzeri bizim kurduğumuz sahte bir rakip sitede o güne kadar ne değiştiğine bakıp yenilikleri tekrar etmeden raporluyor (sahte site çünkü değişiklikleri biz de bilelim manual olarak)
+> 2 problem
+> Meta Muse sadece amerika ve kanadada var, ona access alabilecek miyiz yoksa eklemeyelim mi şimdilik?
+
+- Greeting, then one line on what was done and what the attachment holds.
+- One plain sentence per item, about what happens. No labels or headings in the message.
+- The reason for a surprising choice goes in parentheses on the same line.
+- Ask only what the reader must decide, with the fallback inside the question. Choices the work owner can make stay out of the message.
+- Casual words are fine ("bi", "vs.", "şimdilik"). The word rules above still apply.
+
 ## Part 2: shape
 
 The reader reads the message on a screen and acts on it. Anything below the first screen may be lost.
