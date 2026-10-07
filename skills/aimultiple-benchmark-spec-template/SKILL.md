@@ -21,6 +21,18 @@ The spec goes to sponsor companies (CTO-level readers). They need to understand 
 
 **Do NOT include:** Retry policies, timeout configurations, environment specs (OS, VM details), ground truth refresh schedules, statistical justifications, page-view-count tables, raw-vs-aggregated metric breakdowns, internal fairness rationale paragraphs, failure/edge-case handling procedures. These belong in an internal methodology note, not the spec.
 
+## Internal scope for management (not customer-facing)
+
+When the spec goes only to management, not to a sponsor, write a scope instead (Cem, 2026-10-07):
+
+- TL;DR first, in 2 or 3 sentences.
+- At most 20 sentences in total.
+- Metrics: success rate, time and cost. Elo is fine for judged success. Other metrics are nice to have and wait for a later round.
+- Report results. Do not add a winner rule or name a leader.
+- Keep the detailed design in a separate file for later rounds.
+
+Example: `specs/always-on-agents-benchmark-spec.md` (17 sentences). The 2,600-word first version was rejected as AI slop.
+
 ## Discovery phase (mandatory)
 
 Do not draft any spec content until this phase is complete. Ask the user:
