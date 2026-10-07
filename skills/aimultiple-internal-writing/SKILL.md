@@ -17,6 +17,7 @@ Internal text has one job: the reader acts on it correctly after one read. This 
 | YouTrack card, comment | yes | yes |
 | Slack or e-mail message to the team or Cem | yes | yes |
 | Weekly summary, internal report, briefing | yes | yes |
+| Scope, spec or proposal for management (not for a customer) | yes | yes, plus "Documents for management" |
 | Claude's chat reply to Berkk | yes | yes |
 | Handoff document | yes | no (structure comes from the handoff skill) |
 | Article, social post, vendor-facing copy | no | no |
@@ -91,6 +92,19 @@ Break Part 2 in four cases:
 - A destructive action comes next. Confirm first.
 - Three fix attempts failed. Stop and name the assumption that may be wrong.
 - The request is truly ambiguous. Ask one question.
+
+## Documents for management
+
+Scopes, specs, proposals and plans that management reviews and that do not go to a customer (Cem, 2026-10-07, on a 2,600-word spec he called AI slop):
+
+- Start with a TL;DR of 2 or 3 sentences. The whole document has at most 20 sentences.
+- Keep only what the reader must know or decide. Design detail, scoring mechanics and edge cases go into a separate file for the team.
+- Do not name new concepts. Say what happens in plain words. "Planted events", "carry-over checks" and "self-started work" were not understood. "On day 3 we send a rule change and check that the agent follows it" was.
+- Start simple. The first version carries the core metrics (for a benchmark: success rate, time, cost). Extra measures wait for a later version.
+- Report results. Do not add a winner rule unless management asks for one.
+- Ask management only what management must decide. Choices the work owner can make stay out of the document and the message.
+
+Customer-facing specs keep the 3-to-5-page format of `aimultiple-benchmark-spec-template`.
 
 ## Guards
 
