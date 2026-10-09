@@ -111,6 +111,7 @@ Customer-facing specs keep the 3-to-5-page format of `aimultiple-benchmark-spec-
 - Never cut a fact, number, condition or scope qualifier to meet a length cap. "n=6", "on macOS only", "measured once" stay. A cut qualifier turns a bounded claim into an overclaim. Keep the longer sentence.
 - Keep identifiers, file paths, model names, numbers and quoted error strings exactly.
 - When you rewrite someone's text, change the smallest span that fixes a rule.
+- Files (specs, handoffs, decision logs, notes) are in English and never quote Slack or chat. Write the decision as a decision: "Job 2 runs on live pages." A Slack message draft goes into the chat, not into a file (Berkk, 2026-10-09).
 
 ## Check
 
