@@ -159,7 +159,10 @@ def main():
         if feed(a.id, a.type, [c], f"kanarya {i} ({len(c)} kolon)") is None:
             return 1
     got = fetch(a.id, a.type)
-    fresh = [r for r in got if r not in before]
+    # id sets, not list membership: "r not in before" compared dicts row by row, quadratic on b_420
+    # (170k rows, 2026-10-13: the final check ran 52 minutes and never finished)
+    before_ids = {x.get("id") for x in before}
+    fresh = [r for r in got if r.get("id") not in before_ids]
     bad = compare(canaries, fresh if len(fresh) == len(canaries) else got, key)
     if bad:
         print(f"  ❌ kanarya uyuşmadı, DURULDU ({len(bad)}):")
@@ -184,7 +187,8 @@ def main():
     print("\n— F7 tam doğrulama —")
     got = fetch(a.id, a.type)
     print(f"  geri okunan: {len(got)} · beklenen: {len(before) + len(src)}")
-    new = [r for r in got if r.get("id") not in {x.get("id") for x in before}]
+    before_ids = {x.get("id") for x in before}
+    new = [r for r in got if r.get("id") not in before_ids]
     bad = compare(src, new, key)
     if bad:
         print(f"  ❌ {len(bad)} fark:")
