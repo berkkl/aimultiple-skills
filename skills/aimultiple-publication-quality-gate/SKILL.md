@@ -108,6 +108,12 @@ last=$(grep -n '^codex$' /tmp/codex-out.txt | tail -1 | cut -d: -f1)
 sed -n "$((last+1)),\$p" /tmp/codex-out.txt | sed '/^tokens used$/,$d'
 ```
 
+**A second round can copy the first.** On 2026-10-14 a round-2 register pass ran `rg --files`
+on the gate folder, opened round 1's raw output and returned it word for word, quoting sentences
+that no longer existed in the draft. Before a re-run, move earlier raw outputs out of the
+workspace (keep only the triage file), and check that every quote in the answer exists in the
+current draft.
+
 **A models-cache error is noise, not the cause.** `failed to load models cache: missing field
 base_instructions` appears even on successful runs. If answers genuinely stop, move the file
 aside and it regenerates: `mv ~/.codex/models_cache.json{,.corrupt}`.
