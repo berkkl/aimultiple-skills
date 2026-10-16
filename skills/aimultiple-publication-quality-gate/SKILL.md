@@ -67,16 +67,21 @@ codex exec --skip-git-repo-check -m gpt-6-astra -c model_reasoning_effort=xhigh 
 <path/to/draft.md>" < /dev/null > /tmp/codex-out.txt 2>&1
 ```
 
-**Always pass `-m gpt-6-astra`.** Berkk moved the gate from `gpt-6.1-sol` to `gpt-6-astra` on
-2026-10-14 (before that: `gpt-5.6-sol` until 2026-09-30). Naming the model keeps the run
-reproducible when the account default moves.
+**Use the latest codex-cli and Codex's strongest model, always.** Berkk's rule (2026-10-16).
+The strongest model is `gpt-6-astra` today. Pass it with `-m` so the run stays reproducible
+when the account default moves. Do not pin a CLI version or use an older side install. Before
+every gate run, compare and upgrade:
 
-**Use codex-cli 0.159.2 or newer.** On 2026-09-30 the Mac's `codex` (0.156.1) failed
-with `400 The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account`,
-which reads like an account problem but is a client-version gate. Check `codex --version`
-before a gate run and upgrade if it is older. The judge install at
-`~/.local/share/judge-cli-0930/node_modules/.bin/codex` (0.159.2) runs it on the default profile
-if the PATH `codex` is behind (on 2026-10-14 the PATH `codex` was 0.156.1 again).
+```bash
+npm view @openai/codex version; codex --version   # upgrade if they differ
+npm i -g @openai/codex@latest && hash -r
+```
+
+The `codex` on PATH is the nvm global install. Homebrew and other nvm Node versions carry
+their own copies that fall behind, so run `which codex` after the upgrade. An old client fails
+in misleading ways: on 2026-09-30 a 0.156.1 client returned `400 The 'gpt-6.1-sol' model is not
+supported when using Codex with a ChatGPT account`. That looks like an account problem but is
+a client-version gate.
 
 Let Codex READ the draft from its path rather than pasting the text in. On 2026-08-24 that is
 what let it cross-check figures against the repo's chart JSONs and findings files and catch a
